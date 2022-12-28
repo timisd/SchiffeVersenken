@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BattleShips.Cmd", "BattleShips.Cmd\BattleShips.Cmd.csproj", "{68148818-A69E-4911-BD03-788B7881DDE9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BattleShips.Game", "BattleShips.Game\BattleShips.Game.csproj", "{75FC7DE0-866A-48DC-AA41-EC3AD3EC993A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{68148818-A69E-4911-BD03-788B7881DDE9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{68148818-A69E-4911-BD03-788B7881DDE9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{68148818-A69E-4911-BD03-788B7881DDE9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{68148818-A69E-4911-BD03-788B7881DDE9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{75FC7DE0-866A-48DC-AA41-EC3AD3EC993A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{75FC7DE0-866A-48DC-AA41-EC3AD3EC993A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{75FC7DE0-866A-48DC-AA41-EC3AD3EC993A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{75FC7DE0-866A-48DC-AA41-EC3AD3EC993A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
