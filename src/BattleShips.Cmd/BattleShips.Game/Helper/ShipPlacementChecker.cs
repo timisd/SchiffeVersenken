@@ -66,6 +66,11 @@ public static class ShipPlacementChecker
         {
             for (var colOffset = -1; colOffset < ship.Length + 1; colOffset++)
             {
+                if (start.X + colOffset < 0 || start.X + colOffset > 9 || start.Y + rowOffset < 0 || start.Y + rowOffset > 9)
+                {
+                    continue;
+                }
+                
                 if (_shipList.Contains(ocean[start.Y + rowOffset, start.X + colOffset].Status))
                 {
                     return true;
@@ -91,6 +96,11 @@ public static class ShipPlacementChecker
         {
             for (var colOffset = 0; colOffset < 4; colOffset++)
             {
+                if (start.X + colOffset < 0 || start.X + colOffset > 9 || start.Y + rowOffset < 0 || start.Y + rowOffset > 9)
+                {
+                    continue;
+                }
+                
                 if (_shipList.Contains(ocean[start.Y + rowOffset, start.X + colOffset].Status))
                 {
                     return true;
