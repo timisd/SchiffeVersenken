@@ -17,6 +17,15 @@ public class Grid
         AddTiles();
     }
 
+    /// <summary>
+    /// Prüfe ob das Schiff plaziert werden kann,
+    /// wenn es plaziert werden kann platziere es
+    /// </summary>
+    /// <param name="ship">Schiff</param>
+    /// <param name="start">Startposition</param>
+    /// <param name="orientation">Ausrichtung des Schiffs</param>
+    /// <returns>Gibt true zurück wenn Schiff platziert ansonsten false</returns>
+    /// <exception cref="ArgumentException"></exception>
     public bool PlaceShip(Ship ship, Position start, OrientationEnum orientation)
     {
         if (!ShipPlacementChecker.CanBePlaced(Ocean, ship, start, orientation))

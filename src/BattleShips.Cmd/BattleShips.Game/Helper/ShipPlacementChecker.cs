@@ -21,6 +21,13 @@ public static class ShipPlacementChecker
         };
     }
 
+    /// <summary>
+    /// Prüfen ob das Schiff durch seine Länge aus dem Spielfeld ragt
+    /// </summary>
+    /// <param name="ship">Schiff</param>
+    /// <param name="start">Startposition</param>
+    /// <param name="orientation">Ausrichtung</param>
+    /// <returns>Wahr wenn das Schiff im Spielfeld liegt sonst falsch</returns>
     private static bool CheckIfInsideBorders(Ship ship, Position start, OrientationEnum orientation)
     {
         switch (orientation)
@@ -44,6 +51,15 @@ public static class ShipPlacementChecker
         return true;
     }
 
+    /// <summary>
+    /// Horizontaler Check
+    /// Prüfen ob in einem Umkreis von einem Feld,
+    /// um die gewüschte Schiffposition, ein weiteres Schiff liegt
+    /// </summary>
+    /// <param name="ocean">Spielfeld</param>
+    /// <param name="ship">Schiff</param>
+    /// <param name="start">Startposition</param>
+    /// <returns>Flasch wenn kein Schiff zu nah sonst Wahr</returns>
     private static bool CheckIfShipToClose_Horizontal(Tile[,] ocean, Ship ship, Position start)
     {
         for (var rowOffset = 0; rowOffset < 4; rowOffset++)
@@ -60,6 +76,15 @@ public static class ShipPlacementChecker
         return false;
     }
 
+    /// <summary>
+    /// Vertikaler Check
+    /// Prüfen ob in einem Umkreis von einem Feld,
+    /// um die gewüschte Schiffposition, ein weiteres Schiff liegt
+    /// </summary>
+    /// <param name="ocean">Spielfeld</param>
+    /// <param name="ship">Schiff</param>
+    /// <param name="start">Startposition</param>
+    /// <returns>Flasch wenn kein Schiff zu nah sonst Wahr</returns>
     private static bool CheckIfShipToClose_Vertical(Tile[,] ocean, Ship ship, Position start)
     {
         for (var rowOffset = -1; rowOffset < ship.Length + 1; rowOffset++)
