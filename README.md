@@ -36,4 +36,8 @@ Spiel in C# und WPF als Abschlussprojekt Praktische Informatik ISD 3.
 
 ## Sketch:
 
+### Klassen:
 ![Sketch](./assets/sketch.png)
+
+### Spielfeldlayout:
+![Layout](./assets/gridlayout.png)
