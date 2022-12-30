@@ -41,9 +41,11 @@ public abstract class Player
             _ => new Ship(0)
         };
 
-        MapShip(ship, type);
+        var possible = Board.PlaceShip(ship, start, orientation);
+        if (possible)
+            MapShip(ship, type);
 
-        return Board.PlaceShip(ship, start, orientation);
+        return possible;
     }
 
     public virtual bool PlaceShot(Player enemy, Position pos)

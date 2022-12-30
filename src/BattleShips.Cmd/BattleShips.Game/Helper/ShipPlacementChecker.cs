@@ -62,7 +62,7 @@ public static class ShipPlacementChecker
     /// <returns>Flasch wenn kein Schiff zu nah sonst Wahr</returns>
     private static bool CheckIfShipToClose_Horizontal(Tile[,] ocean, Ship ship, Position start)
     {
-        for (var rowOffset = 0; rowOffset < 4; rowOffset++)
+        for (var rowOffset = -1; rowOffset < 2; rowOffset++)
         {
             for (var colOffset = -1; colOffset < ship.Length + 1; colOffset++)
             {
@@ -94,7 +94,7 @@ public static class ShipPlacementChecker
     {
         for (var rowOffset = -1; rowOffset < ship.Length + 1; rowOffset++)
         {
-            for (var colOffset = 0; colOffset < 4; colOffset++)
+            for (var colOffset = -1; colOffset < 2; colOffset++)
             {
                 if (start.X + colOffset < 0 || start.X + colOffset > 9 || start.Y + rowOffset < 0 || start.Y + rowOffset > 9)
                 {
