@@ -19,7 +19,7 @@ public class ComputerPlayer : Player
         return true;
     }
     
-    public override bool PlaceShot(Player enemy, Position position)
+    public bool PlaceShot(Player enemy)
     {
         var rng = new Random();
         var possible = false;

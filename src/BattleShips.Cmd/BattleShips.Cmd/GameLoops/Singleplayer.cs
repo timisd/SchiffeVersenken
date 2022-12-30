@@ -16,8 +16,21 @@ public static class Singleplayer
         var player1 = new HumanPlayer(name);
         var player2 = new ComputerPlayer("Computer 1");
 
+        PlaceShips(player1, player2);
+
+        do
+        {
+            PlaceShot(player1, player2);
+            player2.PlaceShot(player1);
+        } while (player1.HasLost || player2.HasLost);
+    }
+
+    private static void PlaceShips(Player player1, Player player2)
+    {
         // Computer setzt Schiffe
-        player2.PlaceShip();
+        var comp = player2 as ComputerPlayer;
+        comp?.PlaceShip();
+        // Spieler setzt Schiffe
         while (!player1.AllShipsPlaced)
         {
             switch (player1.Ships.Count())
@@ -47,8 +60,31 @@ public static class Singleplayer
                     throw new Exception("Scheint als gäbe es zu viele Schiffe");
             }
         }
-        
-        BoardHelper.Print(player1.Board.Ocean);
+    }
+
+    private static void PlaceShot(Player player, Player enemy)
+    {
+        int row;
+        int col;
+        do
+        {
+            do
+            {
+                do
+                {
+                    Console.Clear();
+                    Console.WriteLine($"{player.Name}'s Spielfeld:");
+                    BoardHelper.Print(enemy.Board.Ocean);
+                    Console.WriteLine($"{enemy.Name}'s Spielfeld:");
+                    BoardHelper.HiddenPrint(enemy.Board.Ocean);
+                    Console.Write("Auf welches Feld möchtest du Schießen? ");
+                    var input = Console.ReadLine();
+                    col = input[0] - 'A';
+                    input = input.Substring(1);
+                    row = int.Parse(input.ToString()) - 1;
+                } while (!(row is > -1 and < 11 && col is > -1 and < 11));
+            } while (!player.PlaceShot(enemy, new Position(col, row)));
+        } while (enemy.Board.Ocean[col, row].Status is TileStatusEnum.Hit or TileStatusEnum.Destroyed);
     }
 
     private static void PlaceSubmarine(Player player)
