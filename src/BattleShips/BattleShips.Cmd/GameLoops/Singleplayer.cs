@@ -18,11 +18,7 @@ public static class Singleplayer
 
         PlaceShips(player1, player2);
 
-        do
-        {
-            PlaceShot(player1, player2);
-            player2.PlaceShot(player1);
-        } while (player1.HasLost || player2.HasLost);
+        PlaceShots(player1, player2);
     }
 
     private static void PlaceShips(Player player1, Player player2)
@@ -62,6 +58,36 @@ public static class Singleplayer
         }
     }
 
+    private static void PlaceShots(Player player1, Player player2)
+    {
+        var computer = player2 as ComputerPlayer;
+        while (true)
+        {
+            PlaceShot(player1, player2);
+            if (player2.HasLost) break;
+
+            computer?.PlaceShot(player1);
+            if (player1.HasLost) break;
+        }
+
+        Console.Clear();
+        if (player1.HasLost)
+        {
+            Console.WriteLine("! ! ! HERZLICHEN GLÜCKWUNSCH ! ! !\n" +
+                $"{player2.Name} du hast gewonnen.\n");
+        }
+        else
+        {
+            Console.WriteLine("! ! ! HERZLICHEN GLÜCKWUNSCH ! ! !\n" +
+                    $"{player1.Name} du hast gewonnen.\n");
+        }
+
+        Console.WriteLine($"{player1.Name}'s Spielfeld:");
+        BoardHelper.Print(player1.Board.Ocean);
+        Console.WriteLine($"{player2.Name}'s Spielfeld:");
+        BoardHelper.Print(player2.Board.Ocean);
+    }
+
     private static void PlaceShot(Player player, Player enemy)
     {
         int row;
@@ -74,7 +100,7 @@ public static class Singleplayer
                 {
                     Console.Clear();
                     Console.WriteLine($"{player.Name}'s Spielfeld:");
-                    BoardHelper.Print(enemy.Board.Ocean);
+                    BoardHelper.Print(player.Board.Ocean);
                     Console.WriteLine($"{enemy.Name}'s Spielfeld:");
                     BoardHelper.HiddenPrint(enemy.Board.Ocean);
                     Console.Write("Auf welches Feld möchtest du Schießen? ");
@@ -82,9 +108,12 @@ public static class Singleplayer
                     col = input[0] - 'A';
                     input = input.Substring(1);
                     row = int.Parse(input.ToString()) - 1;
+                    // Solange keine korrekte Position eingegeben wurde
                 } while (!(row is > -1 and < 11 && col is > -1 and < 11));
-            } while (!player.PlaceShot(enemy, new Position(col, row)));
-        } while (enemy.Board.Ocean[col, row].Status is TileStatusEnum.Hit or TileStatusEnum.Destroyed);
+                // Solange kein unbeschossenes Feld gewählt
+            } while (!player.PlaceShot(enemy, new Position(col, row))); 
+            // Solange getroffen / zerstört und gegner noch nicht Verloren
+        } while (enemy.Board.Ocean[col, row].Status is TileStatusEnum.Hit or TileStatusEnum.Destroyed && !enemy.HasLost); 
     }
 
     private static void PlaceSubmarine(Player player)

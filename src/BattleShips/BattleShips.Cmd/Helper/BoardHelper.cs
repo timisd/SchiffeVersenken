@@ -14,19 +14,19 @@ public static class BoardHelper
 
     public static void HiddenPrint(Tile[,] ocean)
     {
-        var toBeReplaced = new TileStatusEnum[]
+        var toBeReplaced = new string[]
         {
-            TileStatusEnum.Submarine,
-            TileStatusEnum.Destroyer,
-            TileStatusEnum.Cruiser,
-            TileStatusEnum.Battleship,
-            TileStatusEnum.Carrier
+            $"[{(char)TileStatusEnum.Submarine}]",
+            $"[{(char)TileStatusEnum.Destroyer}]",
+            $"[{(char)TileStatusEnum.Cruiser}]",
+            $"[{(char)TileStatusEnum.Battleship}]",
+            $"[{(char)TileStatusEnum.Carrier}]"
         };
-        var replacementChar = ' ';
+        var replacement = "[ ]";
         var output = Output(ocean);
         output = toBeReplaced.Aggregate(output, 
             (current, replace) => 
-                current.Replace((char)replace, replacementChar));
+                current.Replace(replace, replacement));
         
         Console.WriteLine(output);
     }
