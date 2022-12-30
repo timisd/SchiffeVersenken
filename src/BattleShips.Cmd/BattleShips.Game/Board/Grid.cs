@@ -71,7 +71,7 @@ public class Grid
 
     private void PlaceShip_Horizontal(Ship ship, Position start)
     {
-        for (var offset = 0; offset < ship.Length + 1; offset++)
+        for (var offset = 0; offset < ship.Length; offset++)
         {
             _ocean[start.Y, start.X + offset].PlaceShip(ship);
         }
@@ -79,7 +79,7 @@ public class Grid
 
     private void PlaceShip_Vertical(Ship ship, Position start)
     {
-        for (var offset = 0; offset < ship.Length + 1; offset++)
+        for (var offset = 0; offset < ship.Length; offset++)
         {
             _ocean[start.Y + offset, start.X].PlaceShip(ship);
         }

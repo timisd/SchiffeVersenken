@@ -33,13 +33,13 @@ public static class ShipPlacementChecker
         switch (orientation)
         {
             case OrientationEnum.Horizontal:
-                if (start.X + ship.Length > 9)
+                if (start.X + ship.Length - 1 > 9)
                 {
                     return false;
                 }
                 break;
             case OrientationEnum.Vertical:
-                if (start.Y + ship.Length > 9)
+                if (start.Y + ship.Length - 1 > 9)
                 {
                     return false;
                 }

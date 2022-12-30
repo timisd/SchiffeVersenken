@@ -11,8 +11,7 @@ public class ComputerPlayer : Player
         
     }
 
-    public override bool PlaceShip(ShipTypeEnum type, Position start,
-        OrientationEnum orientation)
+    public bool PlaceShip()
     {
         PlaceShips_1();
         // in Zukunft können mehrere oder zufallsgenerierte Layouts genutzt werden

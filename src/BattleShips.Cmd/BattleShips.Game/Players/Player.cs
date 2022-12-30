@@ -14,13 +14,13 @@ public abstract class Player
     public bool HasLost => Ships.All(ship => ship.IsDestroyed);
 
     private List<Ship> _ships;
-    private Submarine _submarine1;
-    private Submarine _submarine2;
-    private Destroyer _destroyer1;
-    private Destroyer _destroyer2;
-    private Cruiser _cruiser;
-    private Battleship _battleship;
-    private Carrier _carrier;
+    private Ship? _submarine1;
+    private Ship? _submarine2;
+    private Ship? _destroyer1;
+    private Ship? _destroyer2;
+    private Ship? _cruiser;
+    private Ship? _battleship;
+    private Ship? _carrier;
 
     public Player(string name)
     {
@@ -41,11 +41,46 @@ public abstract class Player
             _ => new Ship(0)
         };
 
+        MapShip(ship, type);
+
         return Board.PlaceShip(ship, start, orientation);
     }
 
     public virtual bool PlaceShot(Player enemy, Position pos)
     {
         return enemy.Board.PlaceShot(pos);
+    }
+
+    private void MapShip(Ship ship, ShipTypeEnum type)
+    {
+        switch (type)
+        {
+            case ShipTypeEnum.Submarine:
+                if (_submarine1 == null)
+                    _submarine1 = ship;
+                else
+                    _submarine2 = ship;
+
+                break;
+            case ShipTypeEnum.Destroyer:
+                if (_destroyer1 == null)
+                    _destroyer1 = ship;
+                else
+                    _destroyer2 = ship;
+
+                break;
+            case ShipTypeEnum.Cruiser:
+                _cruiser = ship;
+                break;
+            case ShipTypeEnum.Battleship:
+                _battleship = ship;
+                break;
+            case ShipTypeEnum.Carrier:
+                _carrier = ship;
+                break;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(type), type, null);
+        }
+        _ships.Add(ship);
     }
 }

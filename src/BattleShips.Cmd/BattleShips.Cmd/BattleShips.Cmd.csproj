@@ -8,4 +8,8 @@
         <RootNamespace>BattleShips</RootNamespace>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\BattleShips.Game\BattleShips.Game.csproj" />
+    </ItemGroup>
+
 </Project>
