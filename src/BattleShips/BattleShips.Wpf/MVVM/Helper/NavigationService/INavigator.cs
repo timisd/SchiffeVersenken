@@ -11,5 +11,6 @@ public interface INavigator
 
 public enum ViewsEnum
 {
-    Menu
+    Menu,
+    ShipPlacement
 }

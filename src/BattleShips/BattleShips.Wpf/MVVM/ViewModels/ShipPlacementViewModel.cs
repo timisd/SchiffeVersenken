@@ -4,14 +4,12 @@ using BattleShips.Wpf.MVVM.Helper.NavigationService;
 
 namespace BattleShips.Wpf.MVVM.ViewModels;
 
-public class MenuViewModel : BaseViewModel
+public class ShipPlacementViewModel : BaseViewModel
 {
-    public INavigator Navigator { get; }
     public ICommand UpdateCurrentViewModelCommand { get; }
     
-    public MenuViewModel(INavigator navigator) : base("Schiffe Versenken - Menü")
+    public ShipPlacementViewModel(INavigator navigator) : base("Schiffe Versenken - Schiffe Platzieren")
     {
-        Navigator = navigator;
         UpdateCurrentViewModelCommand = new UpdateCurrentViewModelCommand(navigator);
     }
 }

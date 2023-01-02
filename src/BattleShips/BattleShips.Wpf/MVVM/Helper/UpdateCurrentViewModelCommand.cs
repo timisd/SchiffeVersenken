@@ -29,6 +29,9 @@ public class UpdateCurrentViewModelCommand : ICommand
             case ViewsEnum.Menu:
                 _navigator.Navigate(new MenuViewModel(_navigator));
                 break;
+            case ViewsEnum.ShipPlacement:
+                _navigator.Navigate(new ShipPlacementViewModel(_navigator));
+                break;
             default:
                 break;
         }

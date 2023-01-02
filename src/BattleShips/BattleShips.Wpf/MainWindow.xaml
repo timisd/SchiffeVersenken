@@ -11,7 +11,7 @@
         ResizeMode="NoResize"
         AllowsTransparency="True"
         Background="Transparent"
-        Height="450" Width="800">
+        Height="888" Width="1200">
     <Window.Resources>
         <helper:RectangleConverter x:Key="RectConverter" />
     </Window.Resources>
