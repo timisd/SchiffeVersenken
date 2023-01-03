@@ -3,7 +3,7 @@ using System.Windows.Input;
 
 namespace BattleShips.Wpf.MVVM.Helper;
 
-public class RelayCommand : ICommand
+public class RelayCommand: ICommand
 {
     private readonly Action _action;
 

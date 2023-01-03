@@ -10,6 +10,12 @@
              <DataTemplate DataType="{x:Type viewModels:MenuViewModel}">
                  <views:MenuView/>
              </DataTemplate>
+             <DataTemplate DataType="{x:Type viewModels:GameSetupViewModel}">
+                 <views:GameSetupView/>
+             </DataTemplate>
+             <DataTemplate DataType="{x:Type viewModels:ShipPlacementViewModel}">
+                 <views:ShipPlacementView/>
+             </DataTemplate>
          </ResourceDictionary>
     </Application.Resources>
 </Application>

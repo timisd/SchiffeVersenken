@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Windows;
 using System.Windows.Input;
+using BattleShips.Wpf.MVVM.Helper.DTOs;
 using BattleShips.Wpf.MVVM.Helper.NavigationService;
 using BattleShips.Wpf.MVVM.ViewModels;
 
@@ -22,15 +24,23 @@ public class UpdateCurrentViewModelCommand : ICommand
 
     public void Execute(object? parameter)
     {
-        if (parameter is not ViewsEnum viewType) return;
+        if (parameter is not ViewSwitchDto dto) return;
 
-        switch (viewType)
+        var gameSetupDto = dto as GameSetupDto;
+        var shipPlacementDto = dto as ShipPlacementDto;
+        
+        switch (dto.View)
         {
             case ViewsEnum.Menu:
-                _navigator.Navigate(new MenuViewModel(_navigator));
+                _navigator.Navigate(new MenuViewModel(dto.Navigator));
+                break;
+            case ViewsEnum.GameSetup:
+                if (gameSetupDto != null)
+                    _navigator.Navigate(new GameSetupViewModel(gameSetupDto));
                 break;
             case ViewsEnum.ShipPlacement:
-                _navigator.Navigate(new ShipPlacementViewModel(_navigator));
+                if (shipPlacementDto != null)
+                    _navigator.Navigate(new ShipPlacementViewModel(shipPlacementDto));
                 break;
             default:
                 break;

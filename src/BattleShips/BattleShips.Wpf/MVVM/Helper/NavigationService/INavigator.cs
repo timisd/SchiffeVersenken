@@ -4,7 +4,6 @@ namespace BattleShips.Wpf.MVVM.Helper.NavigationService;
 
 public interface INavigator
 {
-    string Title { get; }
     BaseViewModel? CurrentViewModel { get; set; }
     void Navigate(BaseViewModel? viewModel);
 }
@@ -12,5 +11,6 @@ public interface INavigator
 public enum ViewsEnum
 {
     Menu,
+    GameSetup,
     ShipPlacement
 }

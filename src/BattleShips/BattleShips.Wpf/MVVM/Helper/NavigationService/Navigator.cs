@@ -4,8 +4,6 @@ namespace BattleShips.Wpf.MVVM.Helper.NavigationService;
 
 public class Navigator : ObservableObject, INavigator
 {
-    public string Title { get; private set; } = "";
-    
     private BaseViewModel? _currentViewModel;
 
     public BaseViewModel? CurrentViewModel
@@ -21,7 +19,5 @@ public class Navigator : ObservableObject, INavigator
     public void Navigate(BaseViewModel? viewModel)
     {
         CurrentViewModel = viewModel;
-        if (viewModel != null)
-            Title = viewModel.Title;
     }
 }

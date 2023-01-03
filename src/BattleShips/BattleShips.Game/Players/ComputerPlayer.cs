@@ -6,7 +6,7 @@ namespace BattleShips.Game.Players;
 
 public class ComputerPlayer : Player
 {
-    public ComputerPlayer(string name) : base(name)
+    public ComputerPlayer() : base("Computer")
     {
         
     }
@@ -14,7 +14,7 @@ public class ComputerPlayer : Player
     public bool PlaceShip()
     {
         PlaceShips_1();
-        // in Zukunft können mehrere oder zufallsgenerierte Layouts genutzt werden
+        // in Zukunft können mehrere oder Zufalls generierte Layouts genutzt werden
         
         return true;
     }

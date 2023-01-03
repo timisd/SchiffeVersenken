@@ -14,7 +14,7 @@ public static class Singleplayer
         var name = Console.ReadLine();
         // Spieler initialisieren
         var player1 = new HumanPlayer(name);
-        var player2 = new ComputerPlayer("Computer 1");
+        var player2 = new ComputerPlayer();
 
         PlaceShips(player1, player2);
 

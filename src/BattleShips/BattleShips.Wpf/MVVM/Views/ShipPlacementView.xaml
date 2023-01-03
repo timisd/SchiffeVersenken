@@ -3,28 +3,151 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:local="clr-namespace:BattleShips.Wpf.MVVM.Views"
+             xmlns:viewModels="clr-namespace:BattleShips.Wpf.MVVM.ViewModels"
              mc:Ignorable="d"
-             d:DesignHeight="833" d:DesignWidth="1180">
-    <Grid Background="Transparent">
+             d:DataContext="{d:DesignInstance viewModels:ShipPlacementViewModel}"
+             d:DesignHeight="853" d:DesignWidth="1200">
+    <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="88"/>
+            <RowDefinition/>
         </Grid.RowDefinitions>
+        
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="800"/>
-            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         
         <Label Grid.Row="0" Grid.Column="0"
-               Grid.ColumnSpan="2"
-               HorizontalAlignment="Center"
-               VerticalAlignment="Center"
-               Content="Überschrift"/>
+               Grid.ColumnSpan="2">
+            <Label.Content>
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="{Binding CurrentPlayer.Name}"/>
+                    <Label Content="du bist an der Reihe deine Schiffe zu platzieren"/>
+                </StackPanel>
+            </Label.Content>
+        </Label>
+        
+        <Grid Grid.Row="1" Grid.Column="0" Margin="20" x:Name="Ocean">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            
+            <Label Grid.Row="0" Grid.Column="1" Content="A"/>
+            <Label Grid.Row="0" Grid.Column="2" Content="B"/>
+            <Label Grid.Row="0" Grid.Column="3" Content="C"/>
+            <Label Grid.Row="0" Grid.Column="4" Content="D"/>
+            <Label Grid.Row="0" Grid.Column="5" Content="E"/>
+            <Label Grid.Row="0" Grid.Column="6" Content="F"/>
+            <Label Grid.Row="0" Grid.Column="7" Content="G"/>
+            <Label Grid.Row="0" Grid.Column="8" Content="H"/>
+            <Label Grid.Row="0" Grid.Column="9" Content="I"/>
+            <Label Grid.Row="0" Grid.Column="10" Content="J"/>
+            
+            <Label Grid.Row="1" Grid.Column="0" Content="1"/>
+            <Label Grid.Row="2" Grid.Column="0" Content="2"/>
+            <Label Grid.Row="3" Grid.Column="0" Content="3"/>
+            <Label Grid.Row="4" Grid.Column="0" Content="4"/>
+            <Label Grid.Row="5" Grid.Column="0" Content="5"/>
+            <Label Grid.Row="6" Grid.Column="0" Content="6"/>
+            <Label Grid.Row="7" Grid.Column="0" Content="7"/>
+            <Label Grid.Row="8" Grid.Column="0" Content="8"/>
+            <Label Grid.Row="9" Grid.Column="0" Content="9"/>
+            <Label Grid.Row="10" Grid.Column="0" Content="10"/>
+        </Grid>
+        
+        <Grid Grid.Row="1" Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            
+            <StackPanel Grid.Row="0" Orientation="Horizontal">
+                <Label Content="Ausrichtung:"/>
+                <Label Content="→"/>
+            </StackPanel>
+            <StackPanel Grid.Row="1" Grid.RowSpan="5">
+                <RadioButton IsChecked="True" IsEnabled="{Binding EnableSubmarineRadioButton}">
+                    <RadioButton.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="x"/>
+                            <Label Content="{Binding MissingSubmarinesCounter}"/>
+                            <Label Content="U-Boot"/>
+                        </StackPanel>
+                    </RadioButton.Content>
+                </RadioButton>
+                <RadioButton IsEnabled="{Binding EnableDestroyerRadioButton}">
+                    <RadioButton.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="x"/>
+                            <Label Content="{Binding MissingDestroyerCounter}"/>
+                            <Label Content="Zerstörer"/>
+                        </StackPanel>
+                    </RadioButton.Content>
+                </RadioButton>
+                <RadioButton IsEnabled="{Binding EnableCruiserRadioButton}">
+                    <RadioButton.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="x"/>
+                            <Label Content="{Binding MissingCruiserCounter}"/>
+                            <Label Content="Kreuzer"/>
+                        </StackPanel>
+                    </RadioButton.Content>
+                </RadioButton>
+                <RadioButton IsEnabled="{Binding EnableBattleshipRadioButton}">
+                    <RadioButton.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="x"/>
+                            <Label Content="{Binding MissingBattleshipCounter}"/>
+                            <Label Content="Schlachtschiff"/>
+                        </StackPanel>
+                    </RadioButton.Content>
+                </RadioButton>
+                <RadioButton IsEnabled="{Binding EnableCarrierRadioButton}">
+                    <RadioButton.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="x"/>
+                            <Label Content="{Binding MissingCarrierCounter}"/>
+                            <Label Content="Flugzeugträger"/>
+                        </StackPanel>
+                    </RadioButton.Content>
+                </RadioButton>
+            </StackPanel>
+            <StackPanel Grid.Row="6"
+                        Orientation="Horizontal">
+                <!-- <Button Content="Alles Zurücksetzten"/> -->
+                <Button Content="Bestätigen"
+                        IsEnabled="{Binding CanContinue}"/>
+            </StackPanel>
+        </Grid>
     </Grid>
 </UserControl>

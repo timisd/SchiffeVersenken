@@ -12,6 +12,11 @@ public abstract class Player
     public IEnumerable<Ship> Ships => _ships;
     public bool AllShipsPlaced => Ships.Count() == 7;
     public bool HasLost => Ships.All(ship => ship.IsDestroyed);
+    public int MissingSubmarinesCounter { get; private set; } = 2;
+    public int MissingDestroyerCounter { get; private set; } = 2;
+    public int MissingCruiserCounter { get; private set; } = 1;
+    public int MissingBattleshipCounter { get; private set; } = 1;
+    public int MissingCarrierCounter { get; private set; } = 1;
 
     private List<Ship> _ships;
     private Ship? _submarine1;
@@ -63,6 +68,7 @@ public abstract class Player
                 else
                     _submarine2 = ship;
 
+                MissingSubmarinesCounter--;
                 break;
             case ShipTypeEnum.Destroyer:
                 if (_destroyer1 == null)
@@ -70,15 +76,19 @@ public abstract class Player
                 else
                     _destroyer2 = ship;
 
+                MissingDestroyerCounter--;
                 break;
             case ShipTypeEnum.Cruiser:
                 _cruiser = ship;
+                MissingCruiserCounter--;
                 break;
             case ShipTypeEnum.Battleship:
                 _battleship = ship;
+                MissingBattleshipCounter--;
                 break;
             case ShipTypeEnum.Carrier:
                 _carrier = ship;
+                MissingCarrierCounter--;
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(type), type, null);
