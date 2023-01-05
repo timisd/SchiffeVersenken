@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Configuration;
 using System.Windows;
 using System.Windows.Input;
 using BattleShips.Game.Enums;
@@ -6,41 +7,54 @@ using BattleShips.Game.Players;
 using BattleShips.Wpf.MVVM.Helper;
 using BattleShips.Wpf.MVVM.Helper.DTOs;
 using BattleShips.Wpf.MVVM.Helper.NavigationService;
+using BattleShips.Wpf.MVVM.Models;
 
 namespace BattleShips.Wpf.MVVM.ViewModels;
 
-public class ShipPlacementViewModel : BaseViewModel, INotifyPropertyChanged
+public class ShipPlacementViewModel : BaseViewModel
 {
+    public ShipPlacementModel Model
+    {
+        get => _model;
+        set
+        {
+            _model = value;
+            _model.PropertyChanged += Model_PropertyChanged;
+        }
+    }
     public INavigator Navigator { get; set; }
     public ICommand UpdateCurrentViewModelCommand { get; }
     public ICommand ChangeOrientationCommand { get; }
-    public bool CanContinue => CurrentPlayer.AllShipsPlaced;
-    public int MissingSubmarinesCounter => CurrentPlayer.MissingSubmarinesCounter;
-    public bool EnableSubmarineRadioButton => MissingSubmarinesCounter > 0;
-    public int MissingDestroyerCounter => CurrentPlayer.MissingDestroyerCounter;
-    public bool EnableDestroyerRadioButton => MissingDestroyerCounter > 0;
-    public int MissingCruiserCounter => CurrentPlayer.MissingCruiserCounter;
-    public bool EnableCruiserRadioButton => MissingCruiserCounter > 0;
-    public int MissingBattleshipCounter => CurrentPlayer.MissingBattleshipCounter;
-    public bool EnableBattleshipRadioButton => MissingBattleshipCounter > 0;
-    public int MissingCarrierCounter => CurrentPlayer.MissingCarrierCounter;
-    public bool EnableCarrierRadioButton => MissingCarrierCounter > 0;
+    public bool CanContinue => _model.CanContinue;
+    public int MissingSubmarinesCounter => _model.MissingSubmarinesCounter;
+    public bool EnableSubmarineRadioButton => _model.EnableSubmarineRadioButton;
+    public int MissingDestroyerCounter => _model.MissingDestroyerCounter;
+    public bool EnableDestroyerRadioButton => _model.EnableDestroyerRadioButton;
+    public int MissingCruiserCounter => _model.MissingCruiserCounter;
+    public bool EnableCruiserRadioButton => _model.EnableCruiserRadioButton;
+    public int MissingBattleshipCounter => _model.MissingBattleshipCounter;
+    public bool EnableBattleshipRadioButton => _model.EnableBattleshipRadioButton;
+    public int MissingCarrierCounter => _model.MissingCarrierCounter;
+    public bool EnableCarrierRadioButton => _model.EnableCarrierRadioButton;
+    public string OrientationString => _model.OrientationString;
     public Player CurrentPlayer { get; }
-    private OrientationEnum _orientation = OrientationEnum.Horizontal;
+    
+    private ShipPlacementModel _model;
     
     public ShipPlacementViewModel(ShipPlacementDto dto)
     {
         Navigator = dto.Navigator;
         CurrentPlayer = dto.Player1.AllShipsPlaced ? dto.Player2 : dto.Player1;
+        _model = new ShipPlacementModel(CurrentPlayer);
 
-        ChangeOrientationCommand = new RelayCommand(ChangeOrientation);
+        ChangeOrientationCommand = new RelayCommand(_model.ChangeOrientation);
 
         UpdateCurrentViewModelCommand = new UpdateCurrentViewModelCommand(Navigator);
     }
-
-    private void ChangeOrientation()
+    
+    private void Model_PropertyChanged(object sender, PropertyChangedEventArgs e)
     {
-        _orientation = _orientation == OrientationEnum.Horizontal ? 
-            OrientationEnum.Vertical : OrientationEnum.Horizontal;
+        MessageBox.Show(e.PropertyName);
+        OnPropertyChanged(e.PropertyName);
     }
 }
