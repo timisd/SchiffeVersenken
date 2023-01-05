@@ -93,7 +93,9 @@
             
             <StackPanel Grid.Row="0" Orientation="Horizontal">
                 <Label Content="Ausrichtung:"/>
-                <Label Content="→"/>
+                <Button Name="ChangeOrientationButton"
+                        Content="→"
+                        Command="{Binding ChangeOrientationCommand}"/>
             </StackPanel>
             <StackPanel Grid.Row="1" Grid.RowSpan="5">
                 <RadioButton IsChecked="True" IsEnabled="{Binding EnableSubmarineRadioButton}">

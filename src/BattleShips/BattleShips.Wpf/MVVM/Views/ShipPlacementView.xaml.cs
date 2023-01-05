@@ -1,4 +1,6 @@
 ﻿using System.Windows.Controls;
+using System.Windows.Input;
+using BattleShips.Wpf.MVVM.ViewModels;
 
 namespace BattleShips.Wpf.MVVM.Views;
 

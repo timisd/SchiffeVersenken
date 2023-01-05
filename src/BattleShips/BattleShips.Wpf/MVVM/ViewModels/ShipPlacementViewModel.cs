@@ -1,4 +1,7 @@
-﻿using System.Windows.Input;
+﻿using System.ComponentModel;
+using System.Windows;
+using System.Windows.Input;
+using BattleShips.Game.Enums;
 using BattleShips.Game.Players;
 using BattleShips.Wpf.MVVM.Helper;
 using BattleShips.Wpf.MVVM.Helper.DTOs;
@@ -6,10 +9,11 @@ using BattleShips.Wpf.MVVM.Helper.NavigationService;
 
 namespace BattleShips.Wpf.MVVM.ViewModels;
 
-public class ShipPlacementViewModel : BaseViewModel
+public class ShipPlacementViewModel : BaseViewModel, INotifyPropertyChanged
 {
     public INavigator Navigator { get; set; }
     public ICommand UpdateCurrentViewModelCommand { get; }
+    public ICommand ChangeOrientationCommand { get; }
     public bool CanContinue => CurrentPlayer.AllShipsPlaced;
     public int MissingSubmarinesCounter => CurrentPlayer.MissingSubmarinesCounter;
     public bool EnableSubmarineRadioButton => MissingSubmarinesCounter > 0;
@@ -22,12 +26,21 @@ public class ShipPlacementViewModel : BaseViewModel
     public int MissingCarrierCounter => CurrentPlayer.MissingCarrierCounter;
     public bool EnableCarrierRadioButton => MissingCarrierCounter > 0;
     public Player CurrentPlayer { get; }
-
+    private OrientationEnum _orientation = OrientationEnum.Horizontal;
+    
     public ShipPlacementViewModel(ShipPlacementDto dto)
     {
         Navigator = dto.Navigator;
         CurrentPlayer = dto.Player1.AllShipsPlaced ? dto.Player2 : dto.Player1;
 
+        ChangeOrientationCommand = new RelayCommand(ChangeOrientation);
+
         UpdateCurrentViewModelCommand = new UpdateCurrentViewModelCommand(Navigator);
+    }
+
+    private void ChangeOrientation()
+    {
+        _orientation = _orientation == OrientationEnum.Horizontal ? 
+            OrientationEnum.Vertical : OrientationEnum.Horizontal;
     }
 }
