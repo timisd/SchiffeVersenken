@@ -1,60 +1,73 @@
-﻿using System.ComponentModel;
-using System.Configuration;
+﻿using System.Collections.Generic;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Documents;
 using System.Windows.Input;
 using BattleShips.Game.Enums;
 using BattleShips.Game.Players;
 using BattleShips.Wpf.MVVM.Helper;
 using BattleShips.Wpf.MVVM.Helper.DTOs;
-using BattleShips.Wpf.MVVM.Helper.NavigationService;
-using BattleShips.Wpf.MVVM.Models;
 
 namespace BattleShips.Wpf.MVVM.ViewModels;
 
 public class ShipPlacementViewModel : BaseViewModel
 {
-    public ShipPlacementModel Model
-    {
-        get => _model;
-        set
-        {
-            _model = value;
-            _model.PropertyChanged += Model_PropertyChanged;
-        }
-    }
-    public INavigator Navigator { get; set; }
-    public ICommand UpdateCurrentViewModelCommand { get; }
     public ICommand ChangeOrientationCommand { get; }
-    public bool CanContinue => _model.CanContinue;
-    public int MissingSubmarinesCounter => _model.MissingSubmarinesCounter;
-    public bool EnableSubmarineRadioButton => _model.EnableSubmarineRadioButton;
-    public int MissingDestroyerCounter => _model.MissingDestroyerCounter;
-    public bool EnableDestroyerRadioButton => _model.EnableDestroyerRadioButton;
-    public int MissingCruiserCounter => _model.MissingCruiserCounter;
-    public bool EnableCruiserRadioButton => _model.EnableCruiserRadioButton;
-    public int MissingBattleshipCounter => _model.MissingBattleshipCounter;
-    public bool EnableBattleshipRadioButton => _model.EnableBattleshipRadioButton;
-    public int MissingCarrierCounter => _model.MissingCarrierCounter;
-    public bool EnableCarrierRadioButton => _model.EnableCarrierRadioButton;
-    public string OrientationString => _model.OrientationString;
-    public Player CurrentPlayer { get; }
-    
-    private ShipPlacementModel _model;
-    
+    public string Headline => $"{_currentPlayer.Name} du bist dran deine Schiffe zu platzieren";
+    public bool CanContinue => _currentPlayer.AllShipsPlaced;
+    public List<string> Options => new List<string>() 
+    { 
+        SubmarinesRadioButtonContent,
+        DestroyerRadioButtonContent,
+        CruiserRadioButtonContent,
+        BattleshipRadioButtonContent,
+        CarrierRadioButtonContent
+    };
+    public string SubmarinesRadioButtonContent => $"x{_currentPlayer.MissingSubmarinesCounter} U-Boot";
+    public bool EnableSubmarineRadioButton => _currentPlayer.MissingSubmarinesCounter > 0;
+    public string DestroyerRadioButtonContent => $"x{_currentPlayer.MissingDestroyerCounter} Zerstörer";
+    public bool EnableDestroyerRadioButton => _currentPlayer.MissingSubmarinesCounter > 0;
+    public string CruiserRadioButtonContent => $"x{_currentPlayer.MissingCruiserCounter} Kreuzer";
+    public bool EnableCruiserRadioButton => _currentPlayer.MissingSubmarinesCounter > 0;
+    public string BattleshipRadioButtonContent => $"x{_currentPlayer.MissingBattleshipCounter} Schlachtschiff";
+    public bool EnableBattleshipRadioButton => _currentPlayer.MissingSubmarinesCounter > 0;
+    public string CarrierRadioButtonContent => $"x{_currentPlayer.MissingCarrierCounter} Flugzeugträger";
+    public bool EnableCarrierRadioButton => _currentPlayer.MissingSubmarinesCounter > 0;
+    public string OrientationString
+    {
+        get => _orientationString;
+        private set => SetProperty(ref _orientationString, value);
+    }
+
+    public string SelectedShipType
+    {
+        get => _selectedShipType;
+        set => SetProperty(ref _selectedShipType, value);
+    }
+
+    private readonly Player _currentPlayer;
+    private OrientationEnum _orientation = OrientationEnum.Horizontal;
+    private string _selectedShipType = "Submarine";
+    private string _orientationString = "🠖";
+
     public ShipPlacementViewModel(ShipPlacementDto dto)
     {
-        Navigator = dto.Navigator;
-        CurrentPlayer = dto.Player1.AllShipsPlaced ? dto.Player2 : dto.Player1;
-        _model = new ShipPlacementModel(CurrentPlayer);
+        _currentPlayer = dto.Player1.AllShipsPlaced ? dto.Player2 : dto.Player1;
 
-        ChangeOrientationCommand = new RelayCommand(_model.ChangeOrientation);
-
-        UpdateCurrentViewModelCommand = new UpdateCurrentViewModelCommand(Navigator);
+        ChangeOrientationCommand = new RelayCommand(ChangeOrientation);
     }
-    
-    private void Model_PropertyChanged(object sender, PropertyChangedEventArgs e)
+
+    public void MouseEnter(object o, MouseEventArgs e)
     {
-        MessageBox.Show(e.PropertyName);
-        OnPropertyChanged(e.PropertyName);
+        if (o is not Button btn) return;
+
+        MessageBox.Show(SelectedShipType);
+    }
+
+    private void ChangeOrientation()
+    {
+        _orientation = _orientation == OrientationEnum.Horizontal ? 
+            OrientationEnum.Vertical : OrientationEnum.Horizontal;
+        OrientationString = _orientation == OrientationEnum.Horizontal ? "🠖" : "🠗";
     }
 }

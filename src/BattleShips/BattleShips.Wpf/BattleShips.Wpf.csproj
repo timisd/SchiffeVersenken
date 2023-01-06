@@ -11,4 +11,8 @@
       <ProjectReference Include="..\BattleShips.Game\BattleShips.Game.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="MVVM\Models" />
+    </ItemGroup>
+
 </Project>

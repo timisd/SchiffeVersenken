@@ -18,7 +18,7 @@ public abstract class Player
     public int MissingBattleshipCounter { get; private set; } = 1;
     public int MissingCarrierCounter { get; private set; } = 1;
 
-    private List<Ship> _ships;
+    private readonly List<Ship> _ships;
     private Ship? _submarine1;
     private Ship? _submarine2;
     private Ship? _destroyer1;
@@ -27,13 +27,28 @@ public abstract class Player
     private Ship? _battleship;
     private Ship? _carrier;
 
-    public Player(string name)
+    protected Player(string name)
     {
         Name = name;
         Board = new Grid();
         _ships = new List<Ship>();
     }
 
+    public bool CanShipBePlaced(ShipTypeEnum type, Position start, OrientationEnum orientation)
+    {
+        var ship = type switch
+        {
+            ShipTypeEnum.Submarine => new Submarine(),
+            ShipTypeEnum.Destroyer => new Destroyer(),
+            ShipTypeEnum.Cruiser => new Cruiser(),
+            ShipTypeEnum.Battleship => new Battleship(),
+            ShipTypeEnum.Carrier => new Carrier(),
+            _ => new Ship(0)
+        };
+
+        return Board.CanShipBePlaced(ship, start, orientation);
+    }
+    
     public virtual bool PlaceShip(ShipTypeEnum type, Position start, OrientationEnum orientation)
     {
         var ship = type switch
