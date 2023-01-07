@@ -13,6 +13,11 @@
 
     <ItemGroup>
       <Folder Include="MVVM\Models" />
+      <Folder Include="Styles" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Page Remove="Styles\Buttons\OceanButtonStyle.xaml" />
     </ItemGroup>
 
 </Project>

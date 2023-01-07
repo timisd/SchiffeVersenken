@@ -95,27 +95,28 @@
                 <Button Content="{Binding OrientationString}"
                         Command="{Binding ChangeOrientationCommand}"/>
             </StackPanel>
-            <StackPanel Grid.Row="1" Grid.RowSpan="5">
-                <!-- <RadioButton GroupName="ShipTypes" -->
-                <!--              IsChecked="{Binding SelectedShipType}" -->
-                <!--              IsEnabled="{Binding EnableSubmarineRadioButton}" -->
-                <!--              Content="{Binding SubmarinesRadioButtonContent}"/> -->
-                <!-- <RadioButton GroupName="ShipTypes" -->
-                <!--              IsChecked="{Binding SelectedShipType}" -->
-                <!--              IsEnabled="{Binding EnableDestroyerRadioButton}" -->
-                <!--              Content="{Binding DestroyerRadioButtonContent}"/> -->
-                <!-- <RadioButton GroupName="ShipTypes" -->
-                <!--              IsChecked="{Binding SelectedShipType}" -->
-                <!--              IsEnabled="{Binding EnableCruiserRadioButton}" -->
-                <!--              Content="{Binding CruiserRadioButtonContent}"/> -->
-                <!-- <RadioButton GroupName="ShipTypes" -->
-                <!--              IsChecked="{Binding SelectedShipType}" -->
-                <!--              IsEnabled="{Binding EnableBattleshipRadioButton}" -->
-                <!--              Content="{Binding BattleshipRadioButtonContent}"/> -->
-                <!-- <RadioButton GroupName="ShipTypes" -->
-                <!--              IsChecked="{Binding SelectedShipType}" -->
-                <!--              IsEnabled="{Binding EnableCarrierRadioButton}" -->
-                <!--              Content="{Binding CarrierRadioButtonContent}"/> -->
+            <StackPanel Name="ShipTypesGroup" Grid.Row="1" Grid.RowSpan="5">
+                <RadioButton Name="RbSubmarine"
+                             GroupName="shipTypesGroup"
+                             IsChecked="true"
+                             IsEnabled="{Binding EnableSubmarineRadioButton}"
+                             Content="{Binding SubmarinesRadioButtonContent}"/>
+                <RadioButton Name="RbDestroyer"
+                             GroupName="shipTypesGroup"
+                             IsEnabled="{Binding EnableDestroyerRadioButton}"
+                             Content="{Binding DestroyerRadioButtonContent}"/>
+                <RadioButton Name="RbCruiser"
+                             GroupName="shipTypesGroup"
+                             IsEnabled="{Binding EnableCruiserRadioButton}"
+                             Content="{Binding CruiserRadioButtonContent}"/>
+                <RadioButton Name="RbBattleship"
+                             GroupName="shipTypesGroup"
+                             IsEnabled="{Binding EnableBattleshipRadioButton}"
+                             Content="{Binding BattleshipRadioButtonContent}"/>
+                <RadioButton Name="RbCarrier"
+                             GroupName="shipTypesGroup"
+                             IsEnabled="{Binding EnableCarrierRadioButton}"
+                             Content="{Binding CarrierRadioButtonContent}"/>
             </StackPanel>
             <StackPanel Grid.Row="6"
                         Orientation="Horizontal">

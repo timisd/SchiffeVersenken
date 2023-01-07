@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 using BattleShips.Wpf.MVVM.ViewModels;
 
 namespace BattleShips.Wpf.MVVM.Views;
@@ -11,8 +12,9 @@ public partial class ShipPlacementView : UserControl
     {
         InitializeComponent();
         AddGridButtons();
+        AddSelectionChangeOnRadioButton();
     }
-
+    
     private void AddGridButtons()
     {
         for (var row = 1; row <= 10; row++)
@@ -22,11 +24,12 @@ public partial class ShipPlacementView : UserControl
                 var btn = new Button()
                 {
                     Name = $"btn{row}_{col}",
-                    Content = $"{row} | {col}"
+                    Content = $"{row} | {col}",
+                    Background = Brushes.Transparent
                 };
-                
-                btn.MouseEnter += Button_MouseEnter;
 
+                btn.Click += Button_Click;
+                
                 Grid.SetRow(btn, row);
                 Grid.SetColumn(btn, col);
 
@@ -35,9 +38,24 @@ public partial class ShipPlacementView : UserControl
         }
     }
     
-    private void Button_MouseEnter(object sender, MouseEventArgs e)
+    private void AddSelectionChangeOnRadioButton()
     {
-        // Rufe die Funktion des ViewModels über das DataContext auf
-        (DataContext as ShipPlacementViewModel)?.MouseEnter(sender, e);
+        foreach (RadioButton rb in ShipTypesGroup.Children)
+        {
+            rb.Checked += RadioButton_SelectionChange;
+        }
+    }
+
+    private void RadioButton_SelectionChange(object sender, RoutedEventArgs e)
+    {
+        if (sender is RadioButton { IsChecked: true } rb)
+        {
+            (DataContext as ShipPlacementViewModel)?.ShipSelectionChanged(rb);
+        }
+    }
+    
+    private void Button_Click(object sender, RoutedEventArgs e)
+    {
+        (DataContext as ShipPlacementViewModel)?.Button_Click(sender, e);
     }
 }

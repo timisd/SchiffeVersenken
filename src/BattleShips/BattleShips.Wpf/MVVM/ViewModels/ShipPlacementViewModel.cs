@@ -1,9 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Documents;
 using System.Windows.Input;
 using BattleShips.Game.Enums;
+using BattleShips.Game.Helper;
 using BattleShips.Game.Players;
 using BattleShips.Wpf.MVVM.Helper;
 using BattleShips.Wpf.MVVM.Helper.DTOs;
@@ -15,14 +14,6 @@ public class ShipPlacementViewModel : BaseViewModel
     public ICommand ChangeOrientationCommand { get; }
     public string Headline => $"{_currentPlayer.Name} du bist dran deine Schiffe zu platzieren";
     public bool CanContinue => _currentPlayer.AllShipsPlaced;
-    public List<string> Options => new List<string>() 
-    { 
-        SubmarinesRadioButtonContent,
-        DestroyerRadioButtonContent,
-        CruiserRadioButtonContent,
-        BattleshipRadioButtonContent,
-        CarrierRadioButtonContent
-    };
     public string SubmarinesRadioButtonContent => $"x{_currentPlayer.MissingSubmarinesCounter} U-Boot";
     public bool EnableSubmarineRadioButton => _currentPlayer.MissingSubmarinesCounter > 0;
     public string DestroyerRadioButtonContent => $"x{_currentPlayer.MissingDestroyerCounter} Zerstörer";
@@ -39,15 +30,9 @@ public class ShipPlacementViewModel : BaseViewModel
         private set => SetProperty(ref _orientationString, value);
     }
 
-    public string SelectedShipType
-    {
-        get => _selectedShipType;
-        set => SetProperty(ref _selectedShipType, value);
-    }
-
     private readonly Player _currentPlayer;
     private OrientationEnum _orientation = OrientationEnum.Horizontal;
-    private string _selectedShipType = "Submarine";
+    private ShipTypeEnum _selectedShipType = ShipTypeEnum.Submarine;
     private string _orientationString = "🠖";
 
     public ShipPlacementViewModel(ShipPlacementDto dto)
@@ -56,12 +41,30 @@ public class ShipPlacementViewModel : BaseViewModel
 
         ChangeOrientationCommand = new RelayCommand(ChangeOrientation);
     }
-
-    public void MouseEnter(object o, MouseEventArgs e)
+    
+    public void ShipSelectionChanged(RadioButton rb)
     {
-        if (o is not Button btn) return;
+        _selectedShipType = rb.Name switch
+        {
+            "RbSubmarine" => ShipTypeEnum.Submarine,
+            "RbDestroyer" => ShipTypeEnum.Destroyer,
+            "RbCruiser" => ShipTypeEnum.Cruiser,
+            "RbBattleship" => ShipTypeEnum.Battleship,
+            "RbCarrier" => ShipTypeEnum.Carrier,
+            _ => _selectedShipType
+        };
+    }
+    
+    public void Button_Click(object sender, RoutedEventArgs e)
+    {
+        if (sender is not Button btn) return;
 
-        MessageBox.Show(SelectedShipType);
+        var coordinates = btn.Name.ToString()?[3..]?.Split("_");
+        var x = int.Parse(coordinates[0]);
+        var y = int.Parse(coordinates[1]);
+
+        MessageBox.Show($"{x} | {y}");
+        _currentPlayer.PlaceShip(_selectedShipType, new Position(x, y), _orientation);
     }
 
     private void ChangeOrientation()
