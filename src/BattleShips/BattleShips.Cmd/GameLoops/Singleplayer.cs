@@ -13,7 +13,7 @@ public static class Singleplayer
         Console.Write("Bitte gib deinen Namen ein: ");
         var name = Console.ReadLine();
         // Spieler initialisieren
-        var player1 = new HumanPlayer(name);
+        var player1 = new HumanPlayer(name ?? "Spieler");
         var player2 = new ComputerPlayer();
 
         PlaceShips(player1, player2);

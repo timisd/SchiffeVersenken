@@ -24,6 +24,7 @@ public class ShipPlacementViewModel : BaseViewModel
     public bool EnableBattleshipRadioButton => _currentPlayer.MissingSubmarinesCounter > 0;
     public string CarrierRadioButtonContent => $"x{_currentPlayer.MissingCarrierCounter} Flugzeugträger";
     public bool EnableCarrierRadioButton => _currentPlayer.MissingSubmarinesCounter > 0;
+
     public string OrientationString
     {
         get => _orientationString;
@@ -53,18 +54,6 @@ public class ShipPlacementViewModel : BaseViewModel
             "RbCarrier" => ShipTypeEnum.Carrier,
             _ => _selectedShipType
         };
-    }
-    
-    public void Button_Click(object sender, RoutedEventArgs e)
-    {
-        if (sender is not Button btn) return;
-
-        var coordinates = btn.Name.ToString()?[3..]?.Split("_");
-        var x = int.Parse(coordinates[0]);
-        var y = int.Parse(coordinates[1]);
-
-        MessageBox.Show($"{x} | {y}");
-        _currentPlayer.PlaceShip(_selectedShipType, new Position(x, y), _orientation);
     }
 
     private void ChangeOrientation()

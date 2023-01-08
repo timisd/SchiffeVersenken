@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:viewModels="clr-namespace:BattleShips.Wpf.MVVM.ViewModels"
+             xmlns:views="clr-namespace:BattleShips.Wpf.MVVM.Views"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance viewModels:ShipPlacementViewModel}"
              d:DesignHeight="853" d:DesignWidth="1200">
@@ -27,57 +28,9 @@
             </Label.Content>
         </Label>
         
-        <Grid Grid.Row="1" Grid.Column="0" Margin="20" x:Name="Ocean">
-            <Grid.RowDefinitions>
-                <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition/>
-                <RowDefinition/>
-            </Grid.RowDefinitions>
-            
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
-            
-            <Label Grid.Row="0" Grid.Column="1" Content="A"/>
-            <Label Grid.Row="0" Grid.Column="2" Content="B"/>
-            <Label Grid.Row="0" Grid.Column="3" Content="C"/>
-            <Label Grid.Row="0" Grid.Column="4" Content="D"/>
-            <Label Grid.Row="0" Grid.Column="5" Content="E"/>
-            <Label Grid.Row="0" Grid.Column="6" Content="F"/>
-            <Label Grid.Row="0" Grid.Column="7" Content="G"/>
-            <Label Grid.Row="0" Grid.Column="8" Content="H"/>
-            <Label Grid.Row="0" Grid.Column="9" Content="I"/>
-            <Label Grid.Row="0" Grid.Column="10" Content="J"/>
-            
-            <Label Grid.Row="1" Grid.Column="0" Content="1"/>
-            <Label Grid.Row="2" Grid.Column="0" Content="2"/>
-            <Label Grid.Row="3" Grid.Column="0" Content="3"/>
-            <Label Grid.Row="4" Grid.Column="0" Content="4"/>
-            <Label Grid.Row="5" Grid.Column="0" Content="5"/>
-            <Label Grid.Row="6" Grid.Column="0" Content="6"/>
-            <Label Grid.Row="7" Grid.Column="0" Content="7"/>
-            <Label Grid.Row="8" Grid.Column="0" Content="8"/>
-            <Label Grid.Row="9" Grid.Column="0" Content="9"/>
-            <Label Grid.Row="10" Grid.Column="0" Content="10"/>
-        </Grid>
+        <ContentControl Grid.Row="1" Grid.Column="0">
+            <views:OceanView/>
+        </ContentControl>
         
         <Grid Grid.Row="1" Grid.Column="1">
             <Grid.RowDefinitions>

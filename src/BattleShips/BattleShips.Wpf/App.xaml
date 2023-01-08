@@ -16,6 +16,9 @@
              <DataTemplate DataType="{x:Type viewModels:ShipPlacementViewModel}">
                  <views:ShipPlacementView/>
              </DataTemplate>
+             <DataTemplate DataType="{x:Type viewModels:OceanViewModel}">
+                 <views:OceanView/>
+             </DataTemplate>
          </ResourceDictionary>
     </Application.Resources>
 </Application>
