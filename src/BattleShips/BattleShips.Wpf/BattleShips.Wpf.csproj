@@ -12,10 +12,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="MVVM\Models" />
-    </ItemGroup>
-
-    <ItemGroup>
       <Page Remove="Styles\Buttons\OceanButtonStyle.xaml" />
     </ItemGroup>
 

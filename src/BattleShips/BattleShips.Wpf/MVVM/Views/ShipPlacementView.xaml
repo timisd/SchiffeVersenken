@@ -28,9 +28,38 @@
             </Label.Content>
         </Label>
         
-        <ContentControl Grid.Row="1" Grid.Column="0">
-            <views:OceanView/>
-        </ContentControl>
+        <!-- <ContentControl Grid.Row="1" Grid.Column="0"> -->
+        <!--     <views:OceanView/> -->
+        <!-- </ContentControl> -->
+        <Grid Grid.Row="1" Grid.Column="0"
+              Name="Ocean" Margin="20">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+        </Grid>
         
         <Grid Grid.Row="1" Grid.Column="1">
             <Grid.RowDefinitions>
@@ -48,6 +77,7 @@
                 <Button Content="{Binding OrientationString}"
                         Command="{Binding ChangeOrientationCommand}"/>
             </StackPanel>
+            
             <StackPanel Name="ShipTypesGroup" Grid.Row="1" Grid.RowSpan="5">
                 <RadioButton Name="RbSubmarine"
                              GroupName="shipTypesGroup"
@@ -71,6 +101,7 @@
                              IsEnabled="{Binding EnableCarrierRadioButton}"
                              Content="{Binding CarrierRadioButtonContent}"/>
             </StackPanel>
+           
             <StackPanel Grid.Row="6"
                         Orientation="Horizontal">
                 <!-- <Button Content="Alles Zurücksetzten"/> -->

@@ -24,7 +24,12 @@ public class ShipPlacementViewModel : BaseViewModel
     public bool EnableBattleshipRadioButton => _currentPlayer.MissingSubmarinesCounter > 0;
     public string CarrierRadioButtonContent => $"x{_currentPlayer.MissingCarrierCounter} Flugzeugträger";
     public bool EnableCarrierRadioButton => _currentPlayer.MissingSubmarinesCounter > 0;
-
+    public string[,] BtnContentArray
+    {
+        get => _btnContentArray; 
+        set => SetProperty(ref _btnContentArray, value);
+    }
+    
     public string OrientationString
     {
         get => _orientationString;
@@ -34,13 +39,17 @@ public class ShipPlacementViewModel : BaseViewModel
     private readonly Player _currentPlayer;
     private OrientationEnum _orientation = OrientationEnum.Horizontal;
     private ShipTypeEnum _selectedShipType = ShipTypeEnum.Submarine;
+    private string[,] _btnContentArray;
     private string _orientationString = "🠖";
 
     public ShipPlacementViewModel(ShipPlacementDto dto)
     {
         _currentPlayer = dto.Player1.AllShipsPlaced ? dto.Player2 : dto.Player1;
-
+        _btnContentArray = new string[10, 10];
+        
         ChangeOrientationCommand = new RelayCommand(ChangeOrientation);
+        
+        SetDefaultButtonContent();
     }
     
     public void ShipSelectionChanged(RadioButton rb)
@@ -55,11 +64,33 @@ public class ShipPlacementViewModel : BaseViewModel
             _ => _selectedShipType
         };
     }
+    
+    public void OceanButton_Clicked(object sender, RoutedEventArgs e)
+    {
+        if (sender is not Button btn) return;
+        
+        var row = Grid.GetRow(btn);
+        var column = Grid.GetColumn(btn);
+        var position = new Position(column, row);
+
+        MessageBox.Show($"Zeile: {row}| Spalte: {column}");
+    }
 
     private void ChangeOrientation()
     {
         _orientation = _orientation == OrientationEnum.Horizontal ? 
             OrientationEnum.Vertical : OrientationEnum.Horizontal;
         OrientationString = _orientation == OrientationEnum.Horizontal ? "🠖" : "🠗";
+    }
+    
+    private void SetDefaultButtonContent()
+    {
+        for (var row = 0; row < 10; row++)
+        {
+            for (var column = 0; column < 10; column++)
+            {
+                _btnContentArray[row, column] = $"{row + 1} | {column + 1}";
+            }
+        }
     }
 }
