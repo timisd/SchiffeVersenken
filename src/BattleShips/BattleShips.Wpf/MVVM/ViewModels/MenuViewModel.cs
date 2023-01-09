@@ -10,8 +10,8 @@ public class MenuViewModel : BaseViewModel
     public ICommand SinglePlayerButtonCommand { get; }
     public ICommand MultiPlayerButtonCommand { get; }
 
-    private INavigator _navigator;
-    private ICommand _updateCurrentViewModelCommand;
+    private readonly INavigator _navigator;
+    private readonly ICommand _updateCurrentViewModelCommand;
 
     public MenuViewModel(INavigator navigator)
     {

@@ -14,9 +14,9 @@ public class GameSetupViewModel : BaseViewModel
     public string PlayerTwoName { get; set; } = "";
     public Visibility IsMultiplayer => _isMultiplayer ? Visibility.Visible : Visibility.Hidden;
     
+    private readonly INavigator _navigator;
     private readonly ICommand _updateCurrentViewModelCommand;
     private readonly bool _isMultiplayer;
-    private INavigator _navigator;
 
     public GameSetupViewModel(GameSetupDto dto)
     {
@@ -33,13 +33,13 @@ public class GameSetupViewModel : BaseViewModel
         if (_isMultiplayer)
         {
             var dto = new ShipPlacementDto(_navigator, ViewsEnum.ShipPlacement, 
-                new HumanPlayer(PlayerOneName), new HumanPlayer(PlayerTwoName));
+                new HumanPlayer(PlayerOneName), new HumanPlayer(PlayerTwoName), false);
             _updateCurrentViewModelCommand.Execute(dto);
         }
         else
         {
             var dto = new ShipPlacementDto(_navigator, ViewsEnum.ShipPlacement, 
-                new HumanPlayer(PlayerOneName), new ComputerPlayer());
+                new HumanPlayer(PlayerOneName), new ComputerPlayer(), true);
             _updateCurrentViewModelCommand.Execute(dto);
         }
     }

@@ -12,5 +12,6 @@ public enum ViewsEnum
 {
     Menu,
     GameSetup,
-    ShipPlacement
+    ShipPlacement,
+    Game
 }

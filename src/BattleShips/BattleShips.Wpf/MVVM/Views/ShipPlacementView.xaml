@@ -4,7 +4,6 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:viewModels="clr-namespace:BattleShips.Wpf.MVVM.ViewModels"
-             xmlns:views="clr-namespace:BattleShips.Wpf.MVVM.Views"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance viewModels:ShipPlacementViewModel}"
              d:DesignHeight="853" d:DesignWidth="1200">
@@ -28,9 +27,6 @@
             </Label.Content>
         </Label>
         
-        <!-- <ContentControl Grid.Row="1" Grid.Column="0"> -->
-        <!--     <views:OceanView/> -->
-        <!-- </ContentControl> -->
         <Grid Grid.Row="1" Grid.Column="0"
               Name="Ocean" Margin="20">
             <Grid.RowDefinitions>
@@ -78,34 +74,24 @@
                         Command="{Binding ChangeOrientationCommand}"/>
             </StackPanel>
             
-            <StackPanel Name="ShipTypesGroup" Grid.Row="1" Grid.RowSpan="5">
-                <RadioButton Name="RbSubmarine"
-                             GroupName="shipTypesGroup"
-                             IsChecked="true"
-                             IsEnabled="{Binding EnableSubmarineRadioButton}"
-                             Content="{Binding SubmarinesRadioButtonContent}"/>
-                <RadioButton Name="RbDestroyer"
-                             GroupName="shipTypesGroup"
-                             IsEnabled="{Binding EnableDestroyerRadioButton}"
-                             Content="{Binding DestroyerRadioButtonContent}"/>
-                <RadioButton Name="RbCruiser"
-                             GroupName="shipTypesGroup"
-                             IsEnabled="{Binding EnableCruiserRadioButton}"
-                             Content="{Binding CruiserRadioButtonContent}"/>
-                <RadioButton Name="RbBattleship"
-                             GroupName="shipTypesGroup"
-                             IsEnabled="{Binding EnableBattleshipRadioButton}"
-                             Content="{Binding BattleshipRadioButtonContent}"/>
-                <RadioButton Name="RbCarrier"
-                             GroupName="shipTypesGroup"
-                             IsEnabled="{Binding EnableCarrierRadioButton}"
-                             Content="{Binding CarrierRadioButtonContent}"/>
-            </StackPanel>
-           
+            <ItemsControl Grid.Row="1" Grid.RowSpan="5"
+                          ItemsSource="{Binding RadioButtonDataCollection}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <RadioButton IsChecked="{Binding RadioButtonIsChecked}"
+                                     IsEnabled="False"
+                                     Content="{Binding RadioButtonContent}"
+                                     GroupName="RadioButtonGroup"/>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+            
             <StackPanel Grid.Row="6"
                         Orientation="Horizontal">
                 <!-- <Button Content="Alles Zurücksetzten"/> -->
-                <Button Content="Bestätigen"
+                <Button Name="BestätigenButton"
+                        Content="Bestätigen"
+                        Command="{Binding StartGameCommand}"
                         IsEnabled="{Binding CanContinue}"/>
             </StackPanel>
         </Grid>

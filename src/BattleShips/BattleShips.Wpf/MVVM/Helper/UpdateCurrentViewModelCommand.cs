@@ -28,6 +28,7 @@ public class UpdateCurrentViewModelCommand : ICommand
 
         var gameSetupDto = dto as GameSetupDto;
         var shipPlacementDto = dto as ShipPlacementDto;
+        var gameDto = dto as GameDto;
         
         switch (dto.View)
         {
@@ -41,6 +42,10 @@ public class UpdateCurrentViewModelCommand : ICommand
             case ViewsEnum.ShipPlacement:
                 if (shipPlacementDto != null)
                     _navigator.Navigate(new ShipPlacementViewModel(shipPlacementDto));
+                break;
+            case ViewsEnum.Game:
+                if (gameDto != null)
+                    _navigator.Navigate(new GameViewModel(gameDto));
                 break;
             default:
                 break;

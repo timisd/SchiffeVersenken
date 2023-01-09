@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
@@ -14,25 +15,8 @@ public partial class ShipPlacementView : UserControl
     public ShipPlacementView()
     {
         InitializeComponent();
-        AddSelectionChangeOnRadioButton();
         AddLabelsToGrid();
         AddButtonsToGrid();
-    }
-
-    private void AddSelectionChangeOnRadioButton()
-    {
-        foreach (RadioButton rb in ShipTypesGroup.Children)
-        {
-            rb.Checked += RadioButton_SelectionChange;
-        }
-    }
-
-    private void RadioButton_SelectionChange(object sender, RoutedEventArgs e)
-    {
-        if (sender is RadioButton { IsChecked: true } rb)
-        {
-            (DataContext as ShipPlacementViewModel)?.ShipSelectionChanged(rb);
-        }
     }
     
     private void AddLabelsToGrid()

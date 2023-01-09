@@ -16,6 +16,9 @@
              <DataTemplate DataType="{x:Type viewModels:ShipPlacementViewModel}">
                  <views:ShipPlacementView/>
              </DataTemplate>
+             <DataTemplate DataType="{x:Type viewModels:GameViewModel}">
+                 <views:GameView/>
+             </DataTemplate>
          </ResourceDictionary>
     </Application.Resources>
 </Application>

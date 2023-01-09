@@ -12,7 +12,7 @@ public class Navigator : ObservableObject, INavigator
         set
         {
             _currentViewModel = value;
-            OnPropertyChanged(nameof(CurrentViewModel));
+            OnPropertyChanged();
         }
     }
 
