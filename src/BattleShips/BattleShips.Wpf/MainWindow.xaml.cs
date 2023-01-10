@@ -15,5 +15,10 @@ namespace BattleShips.Wpf
             
             DataContext = new MainViewModel(this, new Navigator());
         }
+        
+        private void WindowBar_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            MouseLeftButtonDown += delegate { DragMove(); };
+        }
     }
 }

@@ -5,9 +5,85 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:BattleShips.Wpf.MVVM.Views"
              mc:Ignorable="d"
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="853" d:DesignWidth="1200">
     <Grid>
-        <Label Content="Game View"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="88"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="600"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        
+        <Label Grid.Row="0" Grid.Column="0"
+               Grid.ColumnSpan="2"
+               Content="{Binding Headline}"/>
+        
+        <Label Grid.Row="1" Grid.Column="0"
+               Content="{Binding LeftGridHeadline}"/>
+        <Grid Grid.Row="1" Grid.Column="0"
+              Name="OceanLeft" Margin="20">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+        </Grid>
+        
+        <Label Grid.Row="1" Grid.Column="1"
+               Content="{Binding RightGridHeadline}"/>
+        <Grid Grid.Row="1" Grid.Column="1"
+              Name="OceanRight" Margin="20">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+        </Grid>
     </Grid>
 </UserControl>
  

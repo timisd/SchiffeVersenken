@@ -91,7 +91,7 @@
                 <!-- <Button Content="Alles Zurücksetzten"/> -->
                 <Button Name="BestätigenButton"
                         Content="Bestätigen"
-                        Command="{Binding StartGameCommand}"
+                        Command="{Binding ContinueCommand}"
                         IsEnabled="{Binding CanContinue}"/>
             </StackPanel>
         </Grid>

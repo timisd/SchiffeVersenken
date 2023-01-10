@@ -16,7 +16,7 @@ public class ShipPlacementViewModel : BaseViewModel
 {
     public string Headline => $"{_currentPlayer.Name} du bist dran deine Schiffe zu platzieren";
     public ICommand ChangeOrientationCommand { get; }
-    public ICommand StartGameCommand { get; }
+    public ICommand ContinueCommand { get; }
     public ObservableCollection<RadioButtonData> RadioButtonDataCollection { get; }
 
     public bool CanContinue
@@ -50,13 +50,18 @@ public class ShipPlacementViewModel : BaseViewModel
     {
         _navigator = dto.Navigator;
         _updateCurrentViewModelCommand = new UpdateCurrentViewModelCommand(_navigator);
+
+        if (dto.Player2 is ComputerPlayer computer)
+        {
+            computer.PlaceShip();
+        }
         
         _currentPlayer = dto.Player1.AllShipsPlaced ? dto.Player2 : dto.Player1;
         _shipPlacementDto = dto;
         _btnContentArray = new string[10, 10];
 
         ChangeOrientationCommand = new RelayCommand(ChangeOrientation);
-        StartGameCommand = new RelayCommand(StartGame);
+        ContinueCommand = new RelayCommand(ContinueButtonClicked);
         RadioButtonDataCollection = new ObservableCollection<RadioButtonData>();
         
         SetDefaultButtonContent();
@@ -66,6 +71,7 @@ public class ShipPlacementViewModel : BaseViewModel
     public void OceanButton_Clicked(object sender, RoutedEventArgs e)
     {
         if (sender is not Button btn) return;
+        if (_currentPlayer.AllShipsPlaced) return;
         
         var row = Grid.GetRow(btn) - 1;
         var column = Grid.GetColumn(btn) - 1;
@@ -85,10 +91,17 @@ public class ShipPlacementViewModel : BaseViewModel
         OrientationString = _orientation == OrientationEnum.Horizontal ? "🠖" : "🠗";
     }
 
-    private void StartGame()
+    private void ContinueButtonClicked()
     {
-        var dto = new GameDto(_navigator, ViewsEnum.Game, _shipPlacementDto.Player1, _shipPlacementDto.Player2);
-        _updateCurrentViewModelCommand.Execute(dto);
+        if (_shipPlacementDto.Player1.AllShipsPlaced && _shipPlacementDto.Player2.AllShipsPlaced)
+        {
+            var dto = new GameDto(_navigator, ViewsEnum.Game, _shipPlacementDto.Player1, _shipPlacementDto.Player2);
+                _updateCurrentViewModelCommand.Execute(dto);
+        }
+        else
+        {
+            _updateCurrentViewModelCommand.Execute(_shipPlacementDto);
+        }
     }
 
     private void SetDefaultButtonContent()
