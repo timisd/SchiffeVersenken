@@ -6,7 +6,8 @@
              xmlns:viewModels="clr-namespace:BattleShips.Wpf.MVVM.ViewModels"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance viewModels:ShipPlacementViewModel}"
-             d:DesignHeight="853" d:DesignWidth="1200">
+             d:DesignHeight="853" d:DesignWidth="1200"
+             Loaded="ShipPlacementView_OnLoaded">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="88"/>

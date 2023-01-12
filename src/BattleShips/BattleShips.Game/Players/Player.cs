@@ -73,6 +73,19 @@ public abstract class Player
         return enemy.Board.PlaceShot(pos);
     }
 
+    public int GetMissingShipCounter(ShipTypeEnum ship)
+    {
+        return ship switch
+        {
+            ShipTypeEnum.Submarine => MissingSubmarinesCounter,
+            ShipTypeEnum.Destroyer => MissingDestroyerCounter,
+            ShipTypeEnum.Cruiser => MissingCruiserCounter,
+            ShipTypeEnum.Battleship => MissingBattleshipCounter,
+            ShipTypeEnum.Carrier => MissingCarrierCounter,
+            _ => throw new Exception("Invalid ship type")
+        };
+    }
+
     private void MapShip(Ship ship, ShipTypeEnum type)
     {
         switch (type)

@@ -1,19 +1,20 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Input;
 using System.Windows.Media;
 using BattleShips.Wpf.MVVM.Helper;
 using BattleShips.Wpf.MVVM.ViewModels;
 
 namespace BattleShips.Wpf.MVVM.Views;
 
-public partial class ShipPlacementView : UserControl
+public partial class ShipPlacementView
 {
     private const string Alphabet = "ABCDEFGHIJ";
+    private readonly Button[,] _btnArray;
     public ShipPlacementView()
     {
+        _btnArray = new Button[10, 10];
+        
         InitializeComponent();
         AddLabelsToGrid();
         AddButtonsToGrid();
@@ -57,6 +58,8 @@ public partial class ShipPlacementView : UserControl
                 
                 btn.SetBinding(Button.ContentProperty, binding);
                 btn.Click += OceanButton_Click;
+
+                _btnArray[row - 1, column - 1] = btn;
                 
                 Grid.SetRow(btn, row);
                 Grid.SetColumn(btn, column);
@@ -80,5 +83,12 @@ public partial class ShipPlacementView : UserControl
     private void OceanButton_Click(object sender, RoutedEventArgs e)
     {
         (DataContext as ShipPlacementViewModel)?.OceanButton_Clicked(sender, e);
+    }
+    
+    private void ShipPlacementView_OnLoaded(object sender, RoutedEventArgs e)
+    {
+        if (DataContext is not ShipPlacementViewModel vm) return;
+        
+        vm.BtnArray = _btnArray;
     }
 }

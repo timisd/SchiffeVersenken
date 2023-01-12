@@ -29,7 +29,11 @@ public class ShipPlacementViewModel : BaseViewModel
         get => _btnContentArray; 
         set => SetProperty(ref _btnContentArray, value);
     }
-    
+    public Button[,] BtnArray
+    {
+        get => _btnArray;
+        set => SetProperty(ref _btnArray, value);
+    }
     public string OrientationString
     {
         get => _orientationString;
@@ -43,6 +47,7 @@ public class ShipPlacementViewModel : BaseViewModel
     private OrientationEnum _orientation = OrientationEnum.Horizontal;
     private ShipTypeEnum _selectedShipType = ShipTypeEnum.Submarine;
     private string[,] _btnContentArray;
+    private Button[,] _btnArray;
     private string _orientationString = "🠖";
     private bool _canContinue = false;
 
@@ -59,7 +64,8 @@ public class ShipPlacementViewModel : BaseViewModel
         _currentPlayer = dto.Player1.AllShipsPlaced ? dto.Player2 : dto.Player1;
         _shipPlacementDto = dto;
         _btnContentArray = new string[10, 10];
-
+        _btnArray = new Button[10, 10];
+        
         ChangeOrientationCommand = new RelayCommand(ChangeOrientation);
         ContinueCommand = new RelayCommand(ContinueButtonClicked);
         RadioButtonDataCollection = new ObservableCollection<RadioButtonData>();
@@ -77,7 +83,10 @@ public class ShipPlacementViewModel : BaseViewModel
         var column = Grid.GetColumn(btn) - 1;
         var position = new Position(column, row);
 
-        _currentPlayer.PlaceShip(_selectedShipType, position, _orientation);
+        if (_currentPlayer.PlaceShip(_selectedShipType, position, _orientation))
+        {
+            DeactivateSurroundingButtons(new Position(column, row));
+        }
 
         btn.IsEnabled = false;
         UpdateOcean();
@@ -149,73 +158,123 @@ public class ShipPlacementViewModel : BaseViewModel
 
     private void UpdateRadioButtons(ShipTypeEnum ship)
     {
-        switch (ship)
+        var shipTypes = new[] { ShipTypeEnum.Submarine, ShipTypeEnum.Destroyer, ShipTypeEnum.Cruiser, ShipTypeEnum.Battleship, ShipTypeEnum.Carrier };
+
+        for (var i = 0; i < shipTypes.Length; i++)
+        {
+            if (shipTypes[i] != ship) continue;
+            
+            RadioButtonDataCollection[i].RadioButtonContent = $"x{_currentPlayer.GetMissingShipCounter(shipTypes[i])} {GetShipName(shipTypes[i])}";
+            
+            if (_currentPlayer.GetMissingShipCounter(shipTypes[i]) != 0 || i >= shipTypes.Length - 1) continue;
+            
+            _selectedShipType = shipTypes[i+1];
+            RadioButtonDataCollection[i+1].RadioButtonIsChecked = true;
+        }
+        CanContinue = _currentPlayer.GetMissingShipCounter(ShipTypeEnum.Carrier) == 0;
+    }
+
+    private string GetShipName(ShipTypeEnum shipType)
+    {
+        return shipType switch
+        {
+            ShipTypeEnum.Submarine => "U-Boot",
+            ShipTypeEnum.Destroyer => "Zerstörer",
+            ShipTypeEnum.Cruiser => "Kreuzer",
+            ShipTypeEnum.Battleship => "Schlachtschiff",
+            ShipTypeEnum.Carrier => "Flugzeugträger",
+            _ => throw new Exception("Invalid ship type")
+        };
+    }
+    
+    private void DeactivateSurroundingButtons(Position position)
+    {
+        switch (_selectedShipType)
         {
             case ShipTypeEnum.Submarine:
-                RadioButtonDataCollection[0].RadioButtonContent = $"x{_currentPlayer.MissingSubmarinesCounter} U-Boot";
+                if (_orientation == OrientationEnum.Horizontal)
+                {
+                    HorizontalButtonDeactivate(position, 1);
+                }
+                else
+                {
+                    VerticalButtonDeactivate(position, 1);
+                }
                 break;
             case ShipTypeEnum.Destroyer:
-                RadioButtonDataCollection[1].RadioButtonContent = $"x{_currentPlayer.MissingDestroyerCounter} Zerstörer";
+                if (_orientation == OrientationEnum.Horizontal)
+                {
+                    HorizontalButtonDeactivate(position, 2);
+                }
+                else
+                {
+                    VerticalButtonDeactivate(position, 2);
+                }
                 break;
             case ShipTypeEnum.Cruiser:
-                RadioButtonDataCollection[2].RadioButtonContent = $"x{_currentPlayer.MissingCruiserCounter} Kreuzer";
+                if (_orientation == OrientationEnum.Horizontal)
+                {
+                    HorizontalButtonDeactivate(position, 3);
+                }
+                else
+                {
+                    VerticalButtonDeactivate(position, 3);
+                }
                 break;
             case ShipTypeEnum.Battleship:
-                RadioButtonDataCollection[3].RadioButtonContent = $"x{_currentPlayer.MissingBattleshipCounter} Schlachtschiff";
+                if (_orientation == OrientationEnum.Horizontal)
+                {
+                    HorizontalButtonDeactivate(position, 4);
+                }
+                else
+                {
+                    VerticalButtonDeactivate(position, 4);
+                }
                 break;
             case ShipTypeEnum.Carrier:
-                RadioButtonDataCollection[4].RadioButtonContent = $"x{_currentPlayer.MissingCarrierCounter} Flugzeugträger";
+                if (_orientation == OrientationEnum.Horizontal)
+                {
+                    HorizontalButtonDeactivate(position, 5);
+                }
+                else
+                {
+                    VerticalButtonDeactivate(position, 5);
+                }
                 break;
             default:
-                throw new Exception("Schiffstyp nicht vorhanden!");
+                throw new Exception("Diesen Schiff Typ gibt es gar nicht!");
         }
-
-        if (_currentPlayer.MissingSubmarinesCounter == 0)
+    }
+    
+    private void HorizontalButtonDeactivate(Position start, int length)
+    {
+        for (var rowOffset = -1; rowOffset < 2; rowOffset++)
         {
-            RadioButtonDataCollection[1].RadioButtonIsChecked = true;
-            _selectedShipType = ShipTypeEnum.Destroyer;
-        } 
-        if (_currentPlayer.MissingDestroyerCounter == 0)
-        {
-            RadioButtonDataCollection[2].RadioButtonIsChecked = true;
-            _selectedShipType = ShipTypeEnum.Cruiser;
+            for (var colOffset = -1; colOffset < length + 1; colOffset++)
+            {
+                if (start.X + colOffset < 0 || start.X + colOffset > 9 || start.Y + rowOffset < 0 || start.Y + rowOffset > 9)
+                {
+                    continue;
+                }
+                
+                BtnArray[start.Y + rowOffset, start.X + colOffset].IsEnabled = false;
+            }
         }
-        if (_currentPlayer.MissingCruiserCounter == 0)
+    }
+    
+    private void VerticalButtonDeactivate(Position start, int length)
+    {
+        for (var rowOffset = -1; rowOffset < length + 1; rowOffset++)
         {
-            RadioButtonDataCollection[3].RadioButtonIsChecked = true;
-            _selectedShipType = ShipTypeEnum.Battleship;
-        } 
-        if (_currentPlayer.MissingBattleshipCounter == 0)
-        {
-            RadioButtonDataCollection[4].RadioButtonIsChecked = true;
-            _selectedShipType = ShipTypeEnum.Carrier;
+            for (var colOffset = -1; colOffset < 2; colOffset++)
+            {
+                if (start.X + colOffset < 0 || start.X + colOffset > 9 || start.Y + rowOffset < 0 || start.Y + rowOffset > 9)
+                {
+                    continue;
+                }
+                
+                BtnArray[start.Y + rowOffset, start.X + colOffset].IsEnabled = false;
+            }
         }
-
-        if (_currentPlayer.MissingCarrierCounter == 0)
-            CanContinue = true;
-    }
-}
-
-public class RadioButtonData : ObservableObject
-{
-    public string RadioButtonContent
-    {
-        get => _radioButtonContent;
-        set => SetProperty(ref _radioButtonContent, value);
-    }
-
-    public bool RadioButtonIsChecked
-    {
-        get => _radioButtonIsChecked;
-        set => SetProperty(ref _radioButtonIsChecked, value);
-    }
-
-    private string _radioButtonContent;
-    private bool _radioButtonIsChecked;
-
-    public RadioButtonData(string radioButtonContent, bool radioButtonIsChecked)
-    {
-        RadioButtonContent = radioButtonContent;
-        RadioButtonIsChecked = radioButtonIsChecked;
     }
 }
