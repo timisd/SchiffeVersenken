@@ -73,6 +73,11 @@ public abstract class Player
         return enemy.Board.PlaceShot(pos);
     }
 
+    public bool IsHit(Player enemy, Position pos)
+    {
+        return enemy.Board.IsHit(pos);
+    }
+
     public int GetMissingShipCounter(ShipTypeEnum ship)
     {
         return ship switch

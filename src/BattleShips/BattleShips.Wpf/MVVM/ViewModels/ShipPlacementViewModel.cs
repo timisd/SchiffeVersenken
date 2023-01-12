@@ -69,8 +69,7 @@ public class ShipPlacementViewModel : BaseViewModel
         ChangeOrientationCommand = new RelayCommand(ChangeOrientation);
         ContinueCommand = new RelayCommand(ContinueButtonClicked);
         RadioButtonDataCollection = new ObservableCollection<RadioButtonData>();
-        
-        SetDefaultButtonContent();
+
         AddRadioButtonsToCollection();
     }
 
@@ -87,8 +86,7 @@ public class ShipPlacementViewModel : BaseViewModel
         {
             DeactivateSurroundingButtons(new Position(column, row));
         }
-
-        btn.IsEnabled = false;
+        
         UpdateOcean();
         UpdateRadioButtons(_selectedShipType);
     }
@@ -110,17 +108,6 @@ public class ShipPlacementViewModel : BaseViewModel
         else
         {
             _updateCurrentViewModelCommand.Execute(_shipPlacementDto);
-        }
-    }
-
-    private void SetDefaultButtonContent()
-    {
-        for (var row = 0; row < 10; row++)
-        {
-            for (var column = 0; column < 10; column++)
-            {
-                _btnContentArray[row, column] = $"{row + 1} | {column + 1}";
-            }
         }
     }
     
@@ -149,7 +136,8 @@ public class ShipPlacementViewModel : BaseViewModel
         {
             for (var column = 0; column < 10; column++)
             {
-                BtnContentArray[row, column] = _currentPlayer.Board.Ocean[row, column].Status.ToString();
+                var text = (char)_currentPlayer.Board.Ocean[row, column].Status;
+                BtnContentArray[row, column] = text.ToString();
             }
         }
         

@@ -60,6 +60,11 @@ public class Grid
 
         return true;
     }
+    
+    public bool IsHit(Position position)
+    {
+        return _ocean[position.Y, position.X].Status is TileStatusEnum.Hit or TileStatusEnum.Destroyed;
+    }
 
     private void AddTiles()
     {
