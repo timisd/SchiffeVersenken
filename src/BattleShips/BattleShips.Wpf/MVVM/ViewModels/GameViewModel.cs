@@ -58,9 +58,10 @@ public class GameViewModel : BaseViewModel
     
     private readonly INavigator _navigator;
     private readonly ICommand _updateCurrentViewModelCommand;
-    private string _headline = "";
     private readonly string _leftGridHeadline = "";
     private readonly string _rightGridHeadline = "";
+    private readonly GameDto _dto;
+    private string _headline = "";
     private Player _currentPlayer;
     private Player _enemyPlayer;
     private Button[,] _leftButtons;
@@ -73,7 +74,8 @@ public class GameViewModel : BaseViewModel
     {
         _navigator = dto.Navigator;
         _updateCurrentViewModelCommand = new UpdateCurrentViewModelCommand(_navigator);
-        
+        _dto = dto;
+
         _currentPlayer = dto.Player1;
         _enemyPlayer = dto.Player2;
         _leftButtons = new Button[10, 10];
@@ -96,7 +98,7 @@ public class GameViewModel : BaseViewModel
 
         if (!_currentPlayer.PlaceShot(_enemyPlayer, pos)) return;
         
-        UpdateOcean();
+        UpdateOceans();
         if (!_currentPlayer.IsHit(_enemyPlayer, pos))
         {
             SwitchPlayer();
@@ -107,8 +109,8 @@ public class GameViewModel : BaseViewModel
             CheckForWin();
         }
     }
-
-    private void UpdateOcean()
+    
+    private void UpdateOceans()
     {
         var ships = new []
         {
@@ -118,18 +120,21 @@ public class GameViewModel : BaseViewModel
             TileStatusEnum.Battleship,
             TileStatusEnum.Carrier
         };
-        var buttons = _currentPlayerBoardIsLeft ? RightBtnContentArray : LeftBtnContentArray;
         
         for (var row = 0; row < 10; row++)
         {
             for (var column = 0; column < 10; column++)
             {
-                var text = ships.Contains(_enemyPlayer.Board.Ocean[row, column].Status) ? 
-                    (char)TileStatusEnum.Empty : (char)_enemyPlayer.Board.Ocean[row, column].Status;
-                buttons[row, column] = text.ToString();
+                var text = ships.Contains(_dto.Player1.Board.Ocean[row, column].Status) ? 
+                    (char)TileStatusEnum.Empty : (char)_dto.Player1.Board.Ocean[row, column].Status;
+                LeftBtnContentArray[row, column] = text.ToString();
+                
+                text = ships.Contains(_dto.Player2.Board.Ocean[row, column].Status) ? 
+                    (char)TileStatusEnum.Empty : (char)_dto.Player2.Board.Ocean[row, column].Status;
+                RightBtnContentArray[row, column] = text.ToString();
             }
         }
-
+        
         OnPropertyChanged(nameof(LeftBtnContentArray));
         OnPropertyChanged(nameof(RightBtnContentArray));
     }
@@ -142,6 +147,8 @@ public class GameViewModel : BaseViewModel
         Headline = $"{_currentPlayer.Name} du bist an der Reihe! Wähle ein Feld auf {_enemyPlayer.Name}'s Brett aus:";
         ChangeButtonStatusForGrid(_currentPlayerBoardIsLeft, true, _enemyPlayer);
         ChangeButtonStatusForGrid(!_currentPlayerBoardIsLeft, false, _currentPlayer);
+
+        CheckIfSecondPlayerIsComputer();
     }
     
     private void ChangeButtonStatusForGrid(bool left, bool enabled, Player player)
@@ -184,5 +191,30 @@ public class GameViewModel : BaseViewModel
                 Environment.Exit(0);
                 break;
         }
+    }
+
+    private void CheckIfSecondPlayerIsComputer()
+    {
+        if (_currentPlayer is not ComputerPlayer bot) return;
+
+        ComputerPlayerTurn(bot);
+    }
+
+    private void ComputerPlayerTurn(Player bot)
+    {
+        var rng = new Random();
+
+        var isHit = true;
+        do
+        {
+            var pos = new Position(rng.Next(0, 10), rng.Next(0, 10));
+            if (bot.PlaceShot(_enemyPlayer, pos))
+            {
+                isHit = bot.IsHit(_enemyPlayer, pos);
+            }
+            UpdateOceans();
+        } while (isHit);
+        
+        SwitchPlayer();
     }
 }
