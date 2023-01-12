@@ -1,23 +1,20 @@
-﻿using BattleShips.Wpf.MVVM.ViewModels;
+﻿using System.Windows.Controls;
+using BattleShips.Wpf.MVVM.Views;
 
 namespace BattleShips.Wpf.MVVM.Helper.NavigationService;
 
 public class Navigator : ObservableObject, INavigator
 {
-    private BaseViewModel? _currentViewModel;
-
-    public BaseViewModel? CurrentViewModel
+    public UserControl? CurrentView
     {
-        get => _currentViewModel;
-        set
-        {
-            _currentViewModel = value;
-            OnPropertyChanged();
-        }
+        get => _currentView;
+        set => SetProperty(ref _currentView, value);
     }
-
-    public void Navigate(BaseViewModel? viewModel)
+    
+    private UserControl? _currentView = new MenuView();
+    
+    public void Navigate(UserControl? view)
     {
-        CurrentViewModel = viewModel;
+        CurrentView = view;
     }
 }

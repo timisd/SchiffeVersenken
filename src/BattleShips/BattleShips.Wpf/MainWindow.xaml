@@ -47,7 +47,7 @@
             </Grid>
 
             <ContentControl Grid.Row="1"
-                            Content="{Binding Navigator.CurrentViewModel}"/>
+                            Content="{Binding Navigator.CurrentView}"/>
         </Grid>
     </Border>
 </Window>

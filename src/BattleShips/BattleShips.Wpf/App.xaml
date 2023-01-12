@@ -1,24 +1,8 @@
 ﻿<Application x:Class="BattleShips.Wpf.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:BattleShips.Wpf"
-             xmlns:viewModels="clr-namespace:BattleShips.Wpf.MVVM.ViewModels"
-             xmlns:views="clr-namespace:BattleShips.Wpf.MVVM.Views"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         <ResourceDictionary>
-             <DataTemplate DataType="{x:Type viewModels:MenuViewModel}">
-                 <views:MenuView/>
-             </DataTemplate>
-             <DataTemplate DataType="{x:Type viewModels:GameSetupViewModel}">
-                 <views:GameSetupView/>
-             </DataTemplate>
-             <DataTemplate DataType="{x:Type viewModels:ShipPlacementViewModel}">
-                 <views:ShipPlacementView/>
-             </DataTemplate>
-             <DataTemplate DataType="{x:Type viewModels:GameViewModel}">
-                 <views:GameView/>
-             </DataTemplate>
-         </ResourceDictionary>
+         
     </Application.Resources>
 </Application>

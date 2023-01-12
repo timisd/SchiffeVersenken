@@ -1,11 +1,12 @@
-﻿using BattleShips.Wpf.MVVM.ViewModels;
+﻿using System.Windows.Controls;
+using BattleShips.Wpf.MVVM.ViewModels;
 
 namespace BattleShips.Wpf.MVVM.Helper.NavigationService;
 
 public interface INavigator
 {
-    BaseViewModel? CurrentViewModel { get; set; }
-    void Navigate(BaseViewModel? viewModel);
+    UserControl? CurrentView { get; set; }
+    void Navigate(UserControl? view);
 }
 
 public enum ViewsEnum
