@@ -67,7 +67,7 @@ public class ShipPlacementViewModel : BaseViewModel
         _btnArray = new Button[10, 10];
         
         ChangeOrientationCommand = new RelayCommand(ChangeOrientation);
-        ContinueCommand = new RelayCommand(ContinueButtonClicked);
+        ContinueCommand = new RelayCommand(ContinueButton_Clicked);
         RadioButtonDataCollection = new ObservableCollection<RadioButtonData>();
 
         AddRadioButtonsToCollection();
@@ -98,7 +98,7 @@ public class ShipPlacementViewModel : BaseViewModel
         OrientationString = _orientation == OrientationEnum.Horizontal ? "🠖" : "🠗";
     }
 
-    private void ContinueButtonClicked()
+    private void ContinueButton_Clicked()
     {
         if (_shipPlacementDto.Player1.AllShipsPlaced && _shipPlacementDto.Player2.AllShipsPlaced)
         {

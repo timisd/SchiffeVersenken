@@ -8,6 +8,7 @@ using BattleShips.Game.Helper;
 using BattleShips.Game.Players;
 using BattleShips.Wpf.MVVM.Helper;
 using BattleShips.Wpf.MVVM.Helper.DTOs;
+using BattleShips.Wpf.MVVM.Helper.NavigationService;
 
 namespace BattleShips.Wpf.MVVM.ViewModels;
 
@@ -55,6 +56,7 @@ public class GameViewModel : BaseViewModel
         set => SetProperty(ref _rightBtnContentArray, value);
     }
     
+    private readonly INavigator _navigator;
     private readonly ICommand _updateCurrentViewModelCommand;
     private string _headline = "";
     private readonly string _leftGridHeadline = "";
@@ -69,7 +71,8 @@ public class GameViewModel : BaseViewModel
     
     public GameViewModel(GameDto dto)
     {
-        _updateCurrentViewModelCommand = new UpdateCurrentViewModelCommand(dto.Navigator);
+        _navigator = dto.Navigator;
+        _updateCurrentViewModelCommand = new UpdateCurrentViewModelCommand(_navigator);
         
         _currentPlayer = dto.Player1;
         _enemyPlayer = dto.Player2;
@@ -155,9 +158,31 @@ public class GameViewModel : BaseViewModel
 
     private void CheckForWin()
     {
-        if (_enemyPlayer.HasLost)
+        if (!_enemyPlayer.HasLost) return;
+        
+        var selection = MessageBox.Show(
+            $"Glückwunsch!\n{_currentPlayer.Name}\nDu hast Gewonnen!\n\n" +
+            $"Ja = Revenge | Nein = Hauptmenü | Abbruch = Beenden", 
+            "Spiel vorbei",
+            MessageBoxButton.YesNoCancel,
+            MessageBoxImage.Information);
+        
+        switch (selection)
         {
-            MessageBox.Show($"Glückwunsch!\n{_currentPlayer.Name}\nDu hast Gewonnen!");
+            case MessageBoxResult.Yes:
+                _updateCurrentViewModelCommand.Execute(new ShipPlacementDto(
+                    _navigator, 
+                    ViewsEnum.ShipPlacement,
+                    new HumanPlayer(_enemyPlayer.Name),
+                    new HumanPlayer(_currentPlayer.Name),
+                    false));
+                break;
+            case MessageBoxResult.No:
+                _updateCurrentViewModelCommand.Execute(new ViewSwitchDto(_navigator, ViewsEnum.Menu));
+                break;
+            default:
+                Environment.Exit(0);
+                break;
         }
     }
 }
