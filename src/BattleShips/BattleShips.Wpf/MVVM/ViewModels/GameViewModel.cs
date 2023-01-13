@@ -3,6 +3,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 using BattleShips.Game.Enums;
 using BattleShips.Game.Helper;
 using BattleShips.Game.Players;
@@ -56,6 +57,12 @@ public class GameViewModel : BaseViewModel
         set => SetProperty(ref _rightBtnContentArray, value);
     }
     
+    public Color OceanButtonHoverColor
+    {
+        get => _oceanButtonHoverColor;
+        set => SetProperty(ref _oceanButtonHoverColor, value);
+    }
+    
     private readonly INavigator _navigator;
     private readonly ICommand _updateCurrentViewModelCommand;
     private readonly string _leftGridHeadline = "";
@@ -68,7 +75,8 @@ public class GameViewModel : BaseViewModel
     private Button[,] _rightButtons;
     private string[,] _leftBtnContentArray;
     private string[,] _rightBtnContentArray;
-    private bool _currentPlayerBoardIsLeft = true;
+    private bool _activeBoardIsLeft = false;
+    private Color _oceanButtonHoverColor = Colors.Black;
     
     public GameViewModel(GameDto dto)
     {
@@ -83,15 +91,18 @@ public class GameViewModel : BaseViewModel
         _leftBtnContentArray = new string[10, 10];
         _rightBtnContentArray = new string[10, 10];
 
-        Headline = $"{_currentPlayer.Name} du bist an der Reihe! Wähle ein Feld auf {_enemyPlayer.Name}'s Brett aus:";
+        Headline = $"       {_currentPlayer.Name} du bist an der Reihe!\nWähle ein Feld auf {_enemyPlayer.Name}'s Brett aus:";
         LeftGridHeadline = $"{dto.Player1.Name}'s Spielbrett:";
         RightGridHeadline = $"{dto.Player2.Name}'s Spielbrett:";
     }
 
-    public void OceanButton_Clicked(object sender, RoutedEventArgs e)
+    public void OceanButton_Clicked(object sender, RoutedEventArgs args)
     {
         if (sender is not Button btn) return;
 
+        if ((btn.Name.StartsWith("Left") && !_activeBoardIsLeft) || (btn.Name.StartsWith("Right") && _activeBoardIsLeft))
+            return;
+        
         var x = Grid.GetColumn(btn) - 1;
         var y = Grid.GetRow(btn) - 1;
         var pos = new Position(x, y);
@@ -105,9 +116,35 @@ public class GameViewModel : BaseViewModel
         }
         else
         {
-            btn.IsEnabled = false;
             CheckForWin();
         }
+    }
+    
+    public void OceanButton_MouseEnter(object sender, RoutedEventArgs args)
+    {
+        if (sender is not Button btn) return;
+        
+        btn.Style = (Style)Application.Current.Resources["OceanGameButtonHover"];
+
+        Color colors;
+        
+        if (btn.Name.StartsWith("Left"))
+        {
+            colors = _activeBoardIsLeft ? Colors.Green : Colors.Red;
+        }
+        else
+        {
+            colors = !_activeBoardIsLeft ? Colors.Green : Colors.Red;
+        }
+
+        OceanButtonHoverColor = colors;
+    }
+    
+    public void OceanButton_MouseLeave(object sender, RoutedEventArgs args)
+    {
+        if (sender is not Button btn) return;
+        
+        btn.Style = (Style)Application.Current.Resources["OceanGameButton"];
     }
     
     private void UpdateOceans()
@@ -143,26 +180,12 @@ public class GameViewModel : BaseViewModel
     {
         // Werte tauschen
         (_currentPlayer, _enemyPlayer) = (_enemyPlayer, _currentPlayer);
-        _currentPlayerBoardIsLeft = !_currentPlayerBoardIsLeft;
-        Headline = $"{_currentPlayer.Name} du bist an der Reihe! Wähle ein Feld auf {_enemyPlayer.Name}'s Brett aus:";
-        ChangeButtonStatusForGrid(_currentPlayerBoardIsLeft, true, _enemyPlayer);
-        ChangeButtonStatusForGrid(!_currentPlayerBoardIsLeft, false, _currentPlayer);
+        _activeBoardIsLeft = !_activeBoardIsLeft;
+        Headline = $"       {_currentPlayer.Name} du bist an der Reihe! Wähle ein Feld auf {_enemyPlayer.Name}'s Brett aus:";
 
         CheckIfSecondPlayerIsComputer();
     }
     
-    private void ChangeButtonStatusForGrid(bool left, bool enabled, Player player)
-    {
-        var buttons = left ? RightButtons : LeftButtons;
-        for (var row = 0; row < 10; row++)
-        {
-            for (var col = 0; col < 10; col++)
-            {
-                buttons[row, col].IsEnabled = !player.Board.Ocean[row, col].IsShot && enabled;
-            }
-        }
-    }
-
     private void CheckForWin()
     {
         if (!_enemyPlayer.HasLost) return;
@@ -216,5 +239,12 @@ public class GameViewModel : BaseViewModel
         } while (isHit);
         
         SwitchPlayer();
+    }
+    
+    private Position GetPositionFromButton(UIElement btn)
+    {
+        var row = Grid.GetRow(btn) - 1;
+        var column = Grid.GetColumn(btn) - 1;
+        return new Position(column, row);
     }
 }

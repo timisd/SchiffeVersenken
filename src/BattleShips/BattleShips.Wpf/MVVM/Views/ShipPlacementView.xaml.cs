@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
@@ -45,9 +46,30 @@ public partial class ShipPlacementView
         {
             for (var column = 1; column < 11; column++)
             {
-                var btn = new Button()
+                Thickness thick;
+                switch (row)
                 {
-                    Background = Brushes.Transparent
+                    case < 10 when column < 10:
+                        thick = new Thickness(2, 2, 0, 0);
+                        break;
+                    case 10 when column == 10:
+                        thick = new Thickness(2);
+                        break;
+                    default:
+                    {
+                        if (column == 10)
+                            thick = new Thickness(2, 2, 2, 0);
+                        else if (row == 10)
+                            thick = new Thickness(2, 2, 0, 2);
+                        break;
+                    }
+                }
+                
+                var btn = new Button
+                {
+                    BorderBrush = new SolidColorBrush(Colors.Black),
+                    BorderThickness = thick,
+                    Style = (Style)Application.Current.Resources["OceanButton"]
                 };
 
                 var binding = new MultiBinding();
@@ -55,10 +77,15 @@ public partial class ShipPlacementView
                 binding.Bindings.Add(new Binding {Source = row - 1});
                 binding.Bindings.Add(new Binding {Source = column - 1});
                 binding.Converter = new MultiDimensionalConverter();
-                
-                btn.SetBinding(Button.ContentProperty, binding);
-                btn.Click += OceanButton_Click;
 
+                btn.SetBinding(Button.ContentProperty, binding);
+                btn.Click += (sender, args) => 
+                    (DataContext as ShipPlacementViewModel)?.OceanButton_Clicked(sender, args);
+                btn.MouseEnter += (sender, args) =>
+                    (DataContext as ShipPlacementViewModel)?.OceanButton_MouseEnter(sender, args);
+                btn.MouseLeave += (sender, args) =>
+                    (DataContext as ShipPlacementViewModel)?.OceanButton_MouseLeave(sender, args);
+                
                 _btnArray[row - 1, column - 1] = btn;
                 
                 Grid.SetRow(btn, row);
@@ -78,11 +105,6 @@ public partial class ShipPlacementView
             HorizontalAlignment = HorizontalAlignment.Center,
             VerticalAlignment = VerticalAlignment.Center
         };
-    }
-    
-    private void OceanButton_Click(object sender, RoutedEventArgs e)
-    {
-        (DataContext as ShipPlacementViewModel)?.OceanButton_Clicked(sender, e);
     }
     
     private void ShipPlacementView_OnLoaded(object sender, RoutedEventArgs e)

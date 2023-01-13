@@ -12,7 +12,7 @@
         ResizeMode="NoResize"
         AllowsTransparency="True"
         Background="Transparent"
-        Height="888" Width="1200">
+        Height="900" Width="1200">
     <Window.Resources>
         <helper:RectangleConverter x:Key="RectConverter" />
     </Window.Resources>
@@ -31,17 +31,20 @@
         
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="35px" />
+                <RowDefinition Height="35" />
                 <RowDefinition />
             </Grid.RowDefinitions>
         
             <Grid Grid.Row="0" Background="Black"
                   Loaded="WindowBar_OnLoaded">
-                <Label Content="Schiffe Versenken"/>
+                <Label Content="{Binding Navigator.Title}"
+                       Style="{StaticResource WindowTitleLabel}"/>
                 <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
-                    <Button Content="-"
+                    <Button Content="&#xf068;"
+                            Style="{StaticResource MinimizeButton}"
                             Command="{Binding MinimizeCommand}"/>
-                    <Button Content="X"
+                    <Button Content="&#xf00d;"
+                            Style="{StaticResource CloseButton}"
                             Command="{Binding CloseCommand}"/>
                 </StackPanel>
             </Grid>

@@ -10,9 +10,17 @@ public class Navigator : ObservableObject, INavigator
         get => _currentView;
         set => SetProperty(ref _currentView, value);
     }
+
+    public string Title
+    {
+        get => _title;
+        set => SetProperty(ref _title, TitlePrefix + value);
+    }
     
+    private const string TitlePrefix = "Schiffe Versenken - ";
     private UserControl? _currentView = new MenuView();
-    
+    private string _title = TitlePrefix;
+
     public void Navigate(UserControl? view)
     {
         CurrentView = view;

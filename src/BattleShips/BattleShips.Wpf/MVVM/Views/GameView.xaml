@@ -11,7 +11,8 @@
              Loaded="GameView_OnLoaded">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="88"/>
+            <RowDefinition Height="150"/>
+            <RowDefinition Height="50"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
         
@@ -21,12 +22,14 @@
         </Grid.ColumnDefinitions>
         
         <Label Grid.Row="0" Grid.Column="0"
-               Grid.ColumnSpan="2"
-               Content="{Binding Headline}"/>
+                   Grid.ColumnSpan="2"
+                   Content="{Binding Headline}"
+                   Style="{StaticResource CurrentPlayerTurn}"/>
         
         <Label Grid.Row="1" Grid.Column="0"
-               Content="{Binding LeftGridHeadline}"/>
-        <Grid Grid.Row="1" Grid.Column="0"
+               Content="{Binding LeftGridHeadline}"
+               Style="{StaticResource GridDescription}"/>
+        <Grid Grid.Row="2" Grid.Column="0"
               Name="OceanLeft" Margin="20">
             <Grid.RowDefinitions>
                 <RowDefinition/>
@@ -54,11 +57,18 @@
                 <ColumnDefinition/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
+            
+            <Image Grid.Column="1" Grid.Row="1" 
+                   Grid.ColumnSpan="10" Grid.RowSpan="10"
+                   Source="/Resources/Images/water.jpg" 
+                   Stretch="Fill"
+                   Opacity="0.7"/>
         </Grid>
         
         <Label Grid.Row="1" Grid.Column="1"
-               Content="{Binding RightGridHeadline}"/>
-        <Grid Grid.Row="1" Grid.Column="1"
+               Content="{Binding RightGridHeadline}"
+               Style="{StaticResource GridDescription}"/>
+        <Grid Grid.Row="2" Grid.Column="1"
               Name="OceanRight" Margin="20">
             <Grid.RowDefinitions>
                 <RowDefinition/>
@@ -86,6 +96,12 @@
                 <ColumnDefinition/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
+            
+            <Image Grid.Column="1" Grid.Row="1" 
+                   Grid.ColumnSpan="10" Grid.RowSpan="10"
+                   Source="/Resources/Images/water.jpg" 
+                   Stretch="Fill"
+                   Opacity="0.7"/>
         </Grid>
     </Grid>
 </UserControl>

@@ -1,0 +1,10 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/Styles/MainWindow/Index.xaml"/>
+        <ResourceDictionary Source="/Styles/MenuView/Index.xaml"/>
+        <ResourceDictionary Source="/Styles/GameSetupView/Index.xaml"/>
+        <ResourceDictionary Source="/Styles/ShipPlacementView/Index.xaml"/>
+        <ResourceDictionary Source="/Styles/GameView/Index.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+</ResourceDictionary>

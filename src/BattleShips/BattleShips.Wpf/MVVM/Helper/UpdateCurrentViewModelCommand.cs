@@ -34,19 +34,29 @@ public class UpdateCurrentViewModelCommand : ICommand
         switch (dto.View)
         {
             case ViewsEnum.Menu:
+                _navigator.Title = "Menü";
                 _navigator.Navigate(new MenuView {DataContext = new MenuViewModel(dto.Navigator)});
                 break;
             case ViewsEnum.GameSetup:
                 if (gameSetupDto != null)
+                {
+                    _navigator.Title = "Spieleinstellungen";
                     _navigator.Navigate(new GameSetupView {DataContext = new GameSetupViewModel(gameSetupDto)});
+                }
                 break;
             case ViewsEnum.ShipPlacement:
                 if (shipPlacementDto != null)
+                {
+                    _navigator.Title = "Schiffe platzieren";
                     _navigator.Navigate(new ShipPlacementView {DataContext = new ShipPlacementViewModel(shipPlacementDto)});
+                }
                 break;
             case ViewsEnum.Game:
                 if (gameDto != null)
+                {
+                    _navigator.Title = "Spiel";
                     _navigator.Navigate(new GameView {DataContext = new GameViewModel(gameDto)});
+                }
                 break;
             default:
                 break;

@@ -13,6 +13,59 @@
 
     <ItemGroup>
       <Page Remove="Styles\Buttons\OceanButtonStyle.xaml" />
+      <Page Update="Styles\MainWindow\Buttons.xaml">
+        <Generator>MSBuild:Compile</Generator>
+        <XamlRuntime>Wpf</XamlRuntime>
+        <SubType>Designer</SubType>
+      </Page>
+      <Page Update="Styles\Menu\Buttons.xaml">
+        <Generator>MSBuild:Compile</Generator>
+        <XamlRuntime>Wpf</XamlRuntime>
+        <SubType>Designer</SubType>
+      </Page>
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="Resources\Images\water.jpg" />
+      <Resource Include="Resources\Images\water.jpg">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Resource>
+      <None Remove="Resources\Images\cruiser.png" />
+      <Resource Include="Resources\Images\cruiser.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Resource>
+      <None Remove="Resources\Images\battleship.png" />
+      <Resource Include="Resources\Images\battleship.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Resource>
+      <None Remove="Resources\Images\aircraft_carrier.png" />
+      <Resource Include="Resources\Images\aircraft_carrier.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Resource>
+      <None Remove="Resources\Images\submarine.png" />
+      <Resource Include="Resources\Images\submarine.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Resource>
+      <None Remove="Resources\Images\menu_background.png" />
+      <Resource Include="Resources\Images\menu_background.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Resource>
+      <None Remove="Resources\Images\destroyer.png" />
+      <Resource Include="Resources\Images\destroyer.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Resource>
+      <None Remove="Resources\Fonts\roboto-regular.ttf" />
+      <Resource Include="Resources\Fonts\roboto-regular.ttf">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Resource>
+      <None Remove="Resources\Fonts\fa-solid.ttf" />
+      <Resource Include="Resources\Fonts\fa-solid.ttf">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Resource>
+      <None Remove="Resources\Fonts\campus.ttf" />
+      <Resource Include="Resources\Fonts\campus.ttf">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Resource>
     </ItemGroup>
 
 </Project>

@@ -3,6 +3,15 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary>
+                    <FontFamily x:Key="FontAwesome">/Resources/Fonts/fa-solid.ttf#Font Awesome 6 Free Solid</FontFamily>
+                    <FontFamily x:Key="Campus">/Resources/Fonts/campus.ttf#CAMPUS PERSONAL USE</FontFamily>
+                    <FontFamily x:Key="Roboto">/Resources/Fonts/roboto-regular.ttf#Roboto</FontFamily>
+                </ResourceDictionary>
+                <ResourceDictionary Source="/Styles/Index.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

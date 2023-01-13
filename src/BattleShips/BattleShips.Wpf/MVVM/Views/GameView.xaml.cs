@@ -45,7 +45,7 @@ public partial class GameView
         }
     }
     
-    private void AddButtonsToGrid(Panel grid, bool left)
+    private void AddButtonsToGrid(Grid grid, bool left)
     {
         var prefix = left ? "Left" : "Right";
         
@@ -53,10 +53,32 @@ public partial class GameView
         {
             for (var column = 1; column < 11; column++)
             {
+                
+                Thickness thick;
+                switch (row)
+                {
+                    case < 10 when column < 10:
+                        thick = new Thickness(2, 2, 0, 0);
+                        break;
+                    case 10 when column == 10:
+                        thick = new Thickness(2);
+                        break;
+                    default:
+                    {
+                        if (column == 10)
+                            thick = new Thickness(2, 2, 2, 0);
+                        else if (row == 10)
+                            thick = new Thickness(2, 2, 0, 2);
+                        break;
+                    }
+                }
+                
                 var btn = new Button
                 {
                     Name = $"{prefix}GridButton{row}{column}",
-                    Background = Brushes.Transparent
+                    BorderBrush = new SolidColorBrush(Colors.Black),
+                    BorderThickness = thick,
+                    Style = (Style)Application.Current.Resources["OceanGameButton"]
                 };
 
                 var binding = new MultiBinding();
@@ -66,11 +88,14 @@ public partial class GameView
                 binding.Converter = new MultiDimensionalConverter();
                 
                 btn.SetBinding(Button.ContentProperty, binding);
-                btn.Click += OceanButton_Click;
-
+                btn.Click += (sender, args) => (DataContext as GameViewModel)?.OceanButton_Clicked(sender, args);;
+                btn.MouseEnter += (sender, args) =>
+                    (DataContext as GameViewModel)?.OceanButton_MouseEnter(sender, args);
+                btn.MouseLeave += (sender, args) =>
+                    (DataContext as GameViewModel)?.OceanButton_MouseLeave(sender, args);
+                
                 if (left)
                 {
-                    btn.IsEnabled = false;
                     _leftButtons[row - 1, column - 1] = btn;
                 }
                 else
@@ -97,11 +122,6 @@ public partial class GameView
         };
     }
     
-    private void OceanButton_Click(object sender, RoutedEventArgs e)
-    {
-        (DataContext as GameViewModel)?.OceanButton_Clicked(sender, e);
-    }
-
     private void GameView_OnLoaded(object sender, RoutedEventArgs e)
     {
         if (DataContext is not GameViewModel vm) return;

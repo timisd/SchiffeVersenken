@@ -20,12 +20,9 @@
         </Grid.ColumnDefinitions>
         
         <Label Grid.Row="0" Grid.Column="0"
-               Grid.ColumnSpan="2">
-            <Label.Content>
-                <StackPanel Orientation="Horizontal">
-                    <Label Content="{Binding Headline}"/>
-                </StackPanel>
-            </Label.Content>
+               Grid.ColumnSpan="2"
+               Style="{StaticResource CurrentPlayerLabel}"
+               Content="{Binding Headline}">
         </Label>
         
         <Grid Grid.Row="1" Grid.Column="0"
@@ -56,6 +53,12 @@
                 <ColumnDefinition/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
+            
+            <Image Grid.Column="1" Grid.Row="1" 
+                   Grid.ColumnSpan="10" Grid.RowSpan="10"
+                   Source="/Resources/Images/water.jpg" 
+                   Stretch="Fill"
+                   Opacity="0.7"/>
         </Grid>
         
         <Grid Grid.Row="1" Grid.Column="1">
@@ -69,13 +72,69 @@
                 <RowDefinition/>
             </Grid.RowDefinitions>
             
-            <StackPanel Grid.Row="0" Orientation="Horizontal">
-                <Label Content="Ausrichtung:"/>
-                <Button Content="{Binding OrientationString}"
-                        Command="{Binding ChangeOrientationCommand}"/>
+            <StackPanel Grid.Row="0" Orientation="Horizontal" VerticalAlignment="Center">
+                <Label Content="Ausrichtung:"
+                       Style="{StaticResource OrientationLabel}"/>
+                
+                <Button Height="50" Width="150" 
+                        Command="{Binding ChangeOrientationCommand}">
+                    <Button.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="CornerRadius" Value="50"/>
+                        </Style>
+                    </Button.Resources>
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border x:Name="border" CornerRadius="50" Background="Black">
+                                <VisualStateManager.VisualStateGroups>
+                                    <VisualStateGroup x:Name="CommonStates">
+                                        <VisualState x:Name="Normal" />
+                                        <VisualState x:Name="MouseOver">
+                                            <Storyboard>
+                                                <ColorAnimation Duration="0" To="#757575" 
+                                                                Storyboard.TargetName="border" 
+                                                                Storyboard.TargetProperty="Background.(SolidColorBrush.Color)"/>
+                                                <ColorAnimation Duration="0" To="Black" 
+                                                                Storyboard.TargetName="iconHorizontal" 
+                                                                Storyboard.TargetProperty="Foreground.(SolidColorBrush.Color)"/>
+                                                <ColorAnimation Duration="0" To="Black" 
+                                                                Storyboard.TargetName="iconVertical" 
+                                                                Storyboard.TargetProperty="Foreground.(SolidColorBrush.Color)"/>
+                                            </Storyboard>
+                                        </VisualState>
+                                    </VisualStateGroup>
+                                </VisualStateManager.VisualStateGroups>
+                                <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock x:Name="iconHorizontal" Grid.Column="0" Grid.ColumnSpan="2"
+                                               Text="&#xf061;"
+                                               VerticalAlignment="Center"
+                                               HorizontalAlignment="Center"
+                                               Opacity="{Binding OrientationHorizontalVisibility}"
+                                               FontSize="50"
+                                               Foreground="DarkGray"
+                                               FontFamily="{StaticResource FontAwesome}"/>
+                                    <TextBlock x:Name="iconVertical" Grid.Column="0" 
+                                               Grid.ColumnSpan="2"
+                                               Text="&#xf063;"
+                                               VerticalAlignment="Center"
+                                               HorizontalAlignment="Center"
+                                               Opacity="{Binding OrientationVerticalVisibility}"
+                                               FontSize="50"
+                                               Foreground="DarkGray"
+                                               FontFamily="{StaticResource FontAwesome}"/>
+                                </Grid>
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
             </StackPanel>
             
             <ItemsControl Grid.Row="1" Grid.RowSpan="5"
+                          VerticalAlignment="Center"
                           ItemsSource="{Binding RadioButtonDataCollection}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
@@ -87,14 +146,11 @@
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
             
-            <StackPanel Grid.Row="6"
-                        Orientation="Horizontal">
-                <!-- <Button Content="Alles Zurücksetzten"/> -->
-                <Button Name="BestätigenButton"
-                        Content="Bestätigen"
-                        Command="{Binding ContinueCommand}"
-                        IsEnabled="{Binding CanContinue}"/>
-            </StackPanel>
+            <Button Grid.Row="6"
+                    Content="Bestätigen"
+                    Style="{StaticResource AllShipsPlaced}"
+                    Command="{Binding ContinueCommand}"
+                    IsEnabled="{Binding CanContinue}"/>
         </Grid>
     </Grid>
 </UserControl>

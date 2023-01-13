@@ -7,10 +7,110 @@
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance viewModels:MenuViewModel}"
              d:DesignHeight="853" d:DesignWidth="1200">
-    <StackPanel>
-        <Button Content="Einzelspieler"
-                Command="{Binding SinglePlayerButtonCommand}"/>
-        <Button Content="Mehrspieler"
-                Command="{Binding MultiPlayerButtonCommand}"/>
-    </StackPanel>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="300"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions> 
+        
+        <Image Grid.Row="0" Grid.RowSpan="2"
+               Source="/Resources/Images/menu_background.png" 
+               Stretch="Fill"
+               Opacity="0.7"/>
+        
+        <Label Grid.Row="0"
+               Content="Battle Ships"
+               Style="{StaticResource TitleLabel}"/>
+        
+        <StackPanel Grid.Row="1"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Center">
+            
+            <Button Height="250" Width="350" 
+                    Margin="0 175 50 100" 
+                    Command="{Binding SinglePlayerButtonCommand}">
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="50"/>
+                    </Style>
+                </Button.Resources>
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" CornerRadius="50" Background="Black">
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Normal" />
+                                    <VisualState x:Name="MouseOver">
+                                        <Storyboard>
+                                            <ColorAnimation Duration="0" To="DarkGray" 
+                                                            Storyboard.TargetName="border" 
+                                                            Storyboard.TargetProperty="Background.(SolidColorBrush.Color)"/>
+                                            <ColorAnimation Duration="0" To="Black" 
+                                                            Storyboard.TargetName="icon" 
+                                                            Storyboard.TargetProperty="Foreground.(SolidColorBrush.Color)"/>
+                                            <ColorAnimation Duration="0" To="Black" 
+                                                            Storyboard.TargetName="text" 
+                                                            Storyboard.TargetProperty="Foreground.(SolidColorBrush.Color)"/>
+                                        </Storyboard>
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                            <StackPanel>
+                                <TextBlock x:Name="icon" Text="&#xf51c;" TextAlignment="Center"
+                                           Margin="0 40 0 20" FontSize="100"
+                                           Foreground="DarkGray"
+                                           FontFamily="{StaticResource FontAwesome}"/>
+                                <TextBlock x:Name="text" Text="Spieler vs Computer" FontSize="30"
+                                           TextAlignment="Center" Foreground="DarkGray"
+                                           FontFamily="{StaticResource Roboto}"/>
+                            </StackPanel>
+                        </Border>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+            
+            <Button Height="250" Width="350" 
+                    Margin="0 175 50 100" 
+                    Command="{Binding MultiPlayerButtonCommand}">
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="50"/>
+                    </Style>
+                </Button.Resources>
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" CornerRadius="50" Background="Black">
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Normal" />
+                                    <VisualState x:Name="MouseOver">
+                                        <Storyboard>
+                                            <ColorAnimation Duration="0" To="DarkGray" 
+                                                            Storyboard.TargetName="border" 
+                                                            Storyboard.TargetProperty="Background.(SolidColorBrush.Color)"/>
+                                            <ColorAnimation Duration="0" To="Black" 
+                                                            Storyboard.TargetName="icon" 
+                                                            Storyboard.TargetProperty="Foreground.(SolidColorBrush.Color)"/>
+                                            <ColorAnimation Duration="0" To="Black" 
+                                                            Storyboard.TargetName="text" 
+                                                            Storyboard.TargetProperty="Foreground.(SolidColorBrush.Color)"/>
+                                        </Storyboard>
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                            <StackPanel>
+                                <TextBlock x:Name="icon" Text="&#xe068;" TextAlignment="Center"
+                                           Margin="0 40 0 20" FontSize="100"
+                                           Foreground="DarkGray"
+                                           FontFamily="{StaticResource FontAwesome}"/>
+                                <TextBlock x:Name="text" Text="Spieler vs Spieler" FontSize="30"
+                                           TextAlignment="Center" Foreground="DarkGray"
+                                           FontFamily="{StaticResource Roboto}"/>
+                            </StackPanel>
+                        </Border>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+        </StackPanel>
+    </Grid>
 </UserControl>

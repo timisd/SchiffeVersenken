@@ -6,7 +6,8 @@
              xmlns:viewModels="clr-namespace:BattleShips.Wpf.MVVM.ViewModels"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance viewModels:GameSetupViewModel}"
-             d:DesignHeight="853" d:DesignWidth="1200">
+             d:DesignHeight="853" d:DesignWidth="1200"
+             Loaded="GameSetupView_OnLoaded">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition/>
@@ -14,15 +15,62 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
         
-        <StackPanel Grid.Row="0">
-            <Label Content="Bitte gib den Namen des ersten Spielers ein:"/>
-            <TextBox Text="{Binding PlayerOneName}"/>
+        <StackPanel Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center">
+            <Label Content="Bitte gib den Namen des ersten Spielers ein:"
+                   Style="{StaticResource TextBoxLabel}"/>
+            <TextBox x:Name="Player1Name" Text="{Binding PlayerOneName}"
+                     Style="{StaticResource TextBoxNameInput}"/>
         </StackPanel>
-        <StackPanel Grid.Row="1" Visibility="{Binding IsMultiplayer}">
-            <Label Content="Bitte gib den Namen des zweiten Spielers ein:"/>
-            <TextBox Text="{Binding PlayerTwoName}"/>
+        <StackPanel Grid.Row="1" Visibility="{Binding IsMultiplayer}"
+                    VerticalAlignment="Center" HorizontalAlignment="Center">
+            <Label Content="Bitte gib den Namen des zweiten Spielers ein:"
+                   Style="{StaticResource TextBoxLabel}"/>
+            <TextBox Text="{Binding PlayerTwoName}"
+                     Style="{StaticResource TextBoxNameInput}"/>
         </StackPanel>
-        <Button Grid.Row="2" Content="Weiter zum Schiffe platzieren . . ."
-                Command="{Binding NextViewButtonCommand}"/>
+
+        <Button Grid.Row="2" Content="Weiter zum Schiffe platzieren . . ." 
+                Height="250" Width="400" 
+                Margin="0 0 50 0" 
+                Command="{Binding NextViewButtonCommand}">
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="50"/>
+                    </Style>
+                </Button.Resources>
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" CornerRadius="50" Background="Black">
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Normal" />
+                                    <VisualState x:Name="MouseOver">
+                                        <Storyboard>
+                                            <ColorAnimation Duration="0" To="#757575" 
+                                                            Storyboard.TargetName="border" 
+                                                            Storyboard.TargetProperty="Background.(SolidColorBrush.Color)"/>
+                                            <ColorAnimation Duration="0" To="Black" 
+                                                            Storyboard.TargetName="icon" 
+                                                            Storyboard.TargetProperty="Foreground.(SolidColorBrush.Color)"/>
+                                            <ColorAnimation Duration="0" To="Black" 
+                                                            Storyboard.TargetName="text" 
+                                                            Storyboard.TargetProperty="Foreground.(SolidColorBrush.Color)"/>
+                                        </Storyboard>
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                            <StackPanel>
+                                <TextBlock x:Name="icon" Text="&#xf090;" TextAlignment="Center"
+                                           Margin="0 40 0 20" FontSize="100"
+                                           Foreground="DarkGray"
+                                           FontFamily="{StaticResource FontAwesome}"/>
+                                <TextBlock x:Name="text" Text="Weiter zu Schiffe paltzieren" FontSize="30"
+                                           TextAlignment="Center" Foreground="DarkGray"
+                                           FontFamily="{StaticResource Roboto}"/>
+                            </StackPanel>
+                        </Border>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
     </Grid>
 </UserControl>

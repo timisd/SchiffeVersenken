@@ -6,6 +6,7 @@ namespace BattleShips.Wpf.MVVM.Helper.NavigationService;
 public interface INavigator
 {
     UserControl? CurrentView { get; set; }
+    string Title { get; set; }
     void Navigate(UserControl? view);
 }
 

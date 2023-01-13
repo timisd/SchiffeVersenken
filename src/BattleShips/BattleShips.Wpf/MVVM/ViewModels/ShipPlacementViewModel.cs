@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 using BattleShips.Game.Enums;
 using BattleShips.Game.Helper;
 using BattleShips.Game.Players;
@@ -34,10 +35,23 @@ public class ShipPlacementViewModel : BaseViewModel
         get => _btnArray;
         set => SetProperty(ref _btnArray, value);
     }
-    public string OrientationString
+
+    public double OrientationHorizontalVisibility
     {
-        get => _orientationString;
-        private set => SetProperty(ref _orientationString, value);
+        get => _orientationHorizontalVisibility;
+        set => SetProperty(ref _orientationHorizontalVisibility, value);
+    }
+
+    public double OrientationVerticalVisibility
+    {
+        get => _orientationVerticalVisibility;
+        set => SetProperty(ref _orientationVerticalVisibility, value);
+    }
+
+    public Color BackgroundColorOceanButton
+    {
+        get => _backgroundColorOceanButton;
+        set => SetProperty(ref _backgroundColorOceanButton, value);
     }
     
     private readonly INavigator _navigator;
@@ -48,7 +62,10 @@ public class ShipPlacementViewModel : BaseViewModel
     private ShipTypeEnum _selectedShipType = ShipTypeEnum.Submarine;
     private string[,] _btnContentArray;
     private Button[,] _btnArray;
-    private string _orientationString = "🠖";
+    private double _orientationHorizontalVisibility = 1;
+    private double _orientationVerticalVisibility = 0;
+    
+    private Color _backgroundColorOceanButton;
     private bool _canContinue = false;
 
     public ShipPlacementViewModel(ShipPlacementDto dto)
@@ -65,6 +82,7 @@ public class ShipPlacementViewModel : BaseViewModel
         _shipPlacementDto = dto;
         _btnContentArray = new string[10, 10];
         _btnArray = new Button[10, 10];
+        _backgroundColorOceanButton = Colors.Transparent;
         
         ChangeOrientationCommand = new RelayCommand(ChangeOrientation);
         ContinueCommand = new RelayCommand(ContinueButton_Clicked);
@@ -73,29 +91,53 @@ public class ShipPlacementViewModel : BaseViewModel
         AddRadioButtonsToCollection();
     }
 
-    public void OceanButton_Clicked(object sender, RoutedEventArgs e)
+    public void OceanButton_Clicked(object sender, RoutedEventArgs args)
     {
         if (sender is not Button btn) return;
         if (_currentPlayer.AllShipsPlaced) return;
         
-        var row = Grid.GetRow(btn) - 1;
-        var column = Grid.GetColumn(btn) - 1;
-        var position = new Position(column, row);
+        var position = GetPositionFromButton(btn);
+        if (!_currentPlayer.CanShipBePlaced(_selectedShipType, position, _orientation)) return;
 
         if (_currentPlayer.PlaceShip(_selectedShipType, position, _orientation))
         {
-            DeactivateSurroundingButtons(new Position(column, row));
+            // DeactivateSurroundingButtons(position);
         }
         
         UpdateOcean();
         UpdateRadioButtons(_selectedShipType);
+    }
+
+    public void OceanButton_MouseEnter(object sender, RoutedEventArgs args)
+    {
+        if (sender is not Button btn) return;
+        
+        btn.Style = (Style)Application.Current.Resources["OceanButtonPlacementColor"];
+        
+        var position = GetPositionFromButton(btn);
+
+        _currentPlayer.CanShipBePlaced(_selectedShipType, position, _orientation);
+
+        var color = _currentPlayer.CanShipBePlaced(_selectedShipType, position, _orientation)
+            ? Colors.Green
+            : Colors.Red;
+        BackgroundColorOceanButton = color;
+    }
+    
+    public void OceanButton_MouseLeave(object sender, RoutedEventArgs args)
+    {
+        if (sender is not Button btn) return;
+        
+        btn.Style = (Style)Application.Current.Resources["OceanButton"];
     }
     
     private void ChangeOrientation()
     {
         _orientation = _orientation == OrientationEnum.Horizontal ? 
             OrientationEnum.Vertical : OrientationEnum.Horizontal;
-        OrientationString = _orientation == OrientationEnum.Horizontal ? "🠖" : "🠗";
+        OrientationHorizontalVisibility = _orientation == OrientationEnum.Horizontal ? 1 : 0;
+        OrientationVerticalVisibility = _orientation == OrientationEnum.Horizontal ? 0 : 1;
+        Console.WriteLine($"Horizontal: {OrientationHorizontalVisibility} | Vertical: {OrientationVerticalVisibility}");
     }
 
     private void ContinueButton_Clicked()
@@ -264,5 +306,12 @@ public class ShipPlacementViewModel : BaseViewModel
                 BtnArray[start.Y + rowOffset, start.X + colOffset].IsEnabled = false;
             }
         }
+    }
+
+    private Position GetPositionFromButton(UIElement btn)
+    {
+        var row = Grid.GetRow(btn) - 1;
+        var column = Grid.GetColumn(btn) - 1;
+        return new Position(column, row);
     }
 }
