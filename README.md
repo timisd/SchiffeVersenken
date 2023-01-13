@@ -33,11 +33,3 @@ Spiel in C# und WPF als Abschlussprojekt Praktische Informatik ISD 3.
 1. Spieler gegen KI
 2. Spieler gegen Spieler (am gleichen Computer)
 3. [Optional] Spieler gegen Spieler (Netzwerk)
-
-## Sketch:
-
-### Klassen:
-![Sketch](./assets/sketch.png)
-
-### Spielfeldlayout:
-![Layout](./assets/gridlayout.png)
